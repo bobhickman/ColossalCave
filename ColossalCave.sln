@@ -1,9 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColossalCave.Webhook", "ColossalCave.Webhook\ColossalCave.Webhook.csproj", "{60B5DF3F-1CBB-4DE3-B759-ECBBD19C7B0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColossalCave.Engine", "ColossalCave.Engine\ColossalCave.Engine.csproj", "{330030D9-626C-48EC-958F-C1477EF0ACC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColossalCave.ConsoleRunner", "ColossalCave.ConsoleRunner\ColossalCave.ConsoleRunner.csproj", "{091A0CC9-B5F4-4696-A883-640855D4D534}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60B5DF3F-1CBB-4DE3-B759-ECBBD19C7B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B5DF3F-1CBB-4DE3-B759-ECBBD19C7B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B5DF3F-1CBB-4DE3-B759-ECBBD19C7B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B5DF3F-1CBB-4DE3-B759-ECBBD19C7B0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{330030D9-626C-48EC-958F-C1477EF0ACC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330030D9-626C-48EC-958F-C1477EF0ACC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330030D9-626C-48EC-958F-C1477EF0ACC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330030D9-626C-48EC-958F-C1477EF0ACC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{091A0CC9-B5F4-4696-A883-640855D4D534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{091A0CC9-B5F4-4696-A883-640855D4D534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{091A0CC9-B5F4-4696-A883-640855D4D534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{091A0CC9-B5F4-4696-A883-640855D4D534}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

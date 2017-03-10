@@ -1,0 +1,227 @@
+﻿{
+    "1": {
+        "Exits": {
+            "North": { "Id": 5 },
+            "South": { "Id": 4 },
+            "East": { "Id": 3 },
+            "West": { "Id": 2 },
+            "Up": { "Id": 2 },
+            "Down": { "Id": 4 },
+            "In": { "Id": 3 }
+        },
+        "FastTravel": [
+            { "Id": 2 },
+            { "Id": 3 },
+            { "Id": 4 },
+            { "Id": 5 },
+            { "Id": 6 }
+        ],
+        "IsLight": true,
+        "Id": 1,
+        "Name": "road",
+        "ShortDescription": "at the end of the road",
+        "Description": "You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully."
+    },
+    "2": {
+        "Exits": {
+            "North": { "Id": 1 },
+            "South": { "Id": 5 },
+            "East": { "Id": 1 },
+            "Down": { "Id": 1 }
+        },
+        "FastTravel": [
+            { "Id": 1 },
+            { "Id": 5 }
+        ],
+        "IsLight": true,
+        "Id": 2,
+        "Name": "hill",
+        "ShortDescription": "on a hill in the road",
+        "Description": "You have walked up a hill, still in the forest. The road slopes back down the other side of the hill. There is a building in the distance."
+    },
+    "3": {
+        "Exits": {
+            "West": { "Id": 1 },
+            "Out": { "Id": 1 },
+            "Down": { "Id": 79 }
+        },
+        "FastTravel": [ { "Id": 79 } ],
+        "IsLight": true,
+        "Id": 3,
+        "Name": "house",
+        "ShortDescription": "inside a building",
+        "Description": "You are inside a building, a well house for a large spring."
+    },
+    "4": {
+        "Exits": {
+            "Up": { "Id": 1 },
+            "North": { "Id": 1 },
+            "West": { "Id": 5 },
+            "East": { "Id": 5 },
+            "South": { "Id": 7 },
+            "Down": { "Id": 7 }
+        },
+        "FastTravel": [
+            { "Id": 1 },
+            { "Id": 5 },
+            { "Id": 8 }
+        ],
+        "IsLight": true,
+        "Id": 4,
+        "Name": "valley",
+        "ShortDescription": "in a valley",
+        "Description": "You are in a valley in the forest beside a stream tumbling along a rocky bed."
+    },
+    "5": {
+        "Exits": {
+            "East": { "Id": 4 },
+            "Down": { "Id": 4 },
+            "West": { "Id": 5 },
+            "South": { "Id": 5 },
+            "North": {
+                "GoesToRandom": [
+                    {
+                        "Probability": 50,
+                        "GoesTo": { "Id": 5 }
+                    },
+                    {
+                        "Probability": 100,
+                        "GoesTo": { "Id": 6 }
+                    }
+                ],
+                "Id": 5
+            }
+        },
+        "FastTravel": [
+            { "Id": 4 },
+            { "Id": 5 },
+            { "Id": 6 }
+        ],
+        "IsLight": true,
+        "Id": 5,
+        "Name": "forest",
+        "ShortDescription": "in the forest",
+        "Description": "You are in open forest, with a deep valley to one side."
+    },
+    "6": {
+        "Exits": {
+            "North": { "Id": 1 },
+            "East": { "Id": 4 },
+            "West": { "Id": 4 },
+            "Down": { "Id": 4 },
+            "South": { "Id": 5 }
+        },
+        "FastTravel": [
+            { "Id": 1 },
+            { "Id": 4 },
+            { "Id": 5 }
+        ],
+        "IsLight": true,
+        "Id": 6,
+        "Name": "forest",
+        "ShortDescription": "in the forest",
+        "Description": "You are in open forest near both a valley and a road."
+    },
+    "7": {
+        "Exits": {
+            "North": { "Id": 4 },
+            "East": { "Id": 5 },
+            "West": { "Id": 5 },
+            "South": { "Id": 8 },
+            "Up": { "Id": 4 },
+            "Down": { "Id": 8 }
+        },
+        "FastTravel": [
+            { "Id": 1 },
+            { "Id": 5 },
+            { "Id": 8 }
+        ],
+        "IsLight": true,
+        "Id": 7,
+        "Name": "slit",
+        "ShortDescription": "at a slit in the streambed",
+        "Description": "At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock."
+    },
+    "8": {
+        "Exits": {
+            "North": { "Id": 7 },
+            "East": { "Id": 5 },
+            "West": { "Id": 5 },
+            "South": { "Id": 5 },
+            "Up": { "Id": 7 },
+            "Down": { "Id": 9 },
+            "In": { "Id": 9 }
+        },
+        "FastTravel": [
+            { "Id": 1 },
+            { "Id": 5 },
+            { "Id": 7 }
+        ],
+        "IsLight": true,
+        "Id": 8,
+        "Name": "depression",
+        "ShortDescription": "outside of a grate",
+        "Description": "You are in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression."
+    },
+    "9": {
+        "Exits": {
+            "Up": { "Id": 8 },
+            "Out": { "Id": 8 },
+            "West": { "Id": 10 },
+            "In": { "Id": 10 }
+        },
+        "FastTravel": [
+            { "Id": 10 },
+            { "Id": 11 },
+            { "Id": 14 }
+        ],
+        "IsLight": true,
+        "Id": 9,
+        "Name": "entrance",
+        "ShortDescription": "below a grate",
+        "Description": "You are in a small chamber beneath a 3 by 3 steel grate to the surface. A low crawl over cobbles leads inward to the west."
+    },
+    "10": {
+        "Exits": {
+            "East": { "Id": 9 },
+            "Out": { "Id": 9 },
+            "West": { "Id": 11 },
+            "In": { "Id": 11 }
+        },
+        "FastTravel": [
+            { "Id": 9 },
+            { "Id": 11 },
+            { "Id": 14 }
+        ],
+        "IsLight": true,
+        "Id": 10,
+        "Name": "crawl",
+        "ShortDescription": "in a cobble crawl",
+        "Description": "You are crawling over cobbles in a low passage. There is a dim light at the east end of the passage."
+    },
+    "11": {
+        "Exits": {
+            "East": { "Id": 10 },
+            "West": { "Id": 12 },
+            "Up": { "Id": 12 },
+            "In": { "Id": 12 }
+        },
+        "FastTravel": [
+            { "Id": 8 },
+            { "Id": 9 },
+            { "Id": 10 },
+            { "Id": 12 },
+            { "Id": 14 }
+        ],
+        "Id": 11,
+        "Name": "debris",
+        "ShortDescription": "in the debris room",
+        "Description": "\r\nYou are in a debris room filled with stuff washed in from the surface. \r\nA low wide passage with cobbles becomes plugged with mud and debris here, but an awkward canyon leads upward and west. \r\n<break time='1s'/>\r\nA note on the wall says 'Magic word <say-as interpret-as='characters'>XYZZY</say-as>'."
+    },
+    "79": {
+        "Id": 79,
+        "Name": "stream",
+        "ShortDescription": "at sewer pipes",
+        "Description": "The stream flows out through a pair of 1 foot diameter sewer pipes. It would be advisable to use the exit."
+    }
+}

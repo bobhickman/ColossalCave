@@ -1,0 +1,73 @@
+﻿{
+    "2": {
+        "Id": 2,
+        "Text": "A little dwarf with a big knife blocks your way."
+    },
+    "3": {
+        "Id": 3,
+        "Text": "A little dwarf just walked around a corner, saw you, threw a little axe at you which missed, cursed, and ran away."
+    },
+    "4": {
+        "Id": 4,
+        "Text": "There is a threatening little dwarf in the room with you!"
+    },
+    "5": {
+        "Id": 5,
+        "Text": "One sharp nasty knife is thrown at you!"
+    },
+    "6": {
+        "Id": 6,
+        "Text": "None of them hit you!"
+    },
+    "7": {
+        "Id": 7,
+        "Text": "One of them gets you!"
+    },
+    "8": {
+        "Id": 8,
+        "Text": "A hollow voice says 'PLUGH'",
+        "Speech": "A hollow voice says 'PLUG'"
+    },
+    "9": {
+        "Id": 9,
+        "Text": "There is no way to go that direction."
+    },
+    "10": {
+        "Id": 10,
+        "Text": "I am unsure how you are facing. Use compass points or nearby objects."
+    },
+    "11": {
+        "Id": 11,
+        "Text": "I don't know in from out here. Use compass points or name something in the general direction you want to go."
+    },
+    "12": {
+        "Id": 12,
+        "Text": "I don't know how to apply that word here."
+    },
+    "13": {
+        "Id": 13,
+        "Text": "I don't understand that."
+    },
+    "14": {
+        "Id": 14,
+        "Text": "I'm game. Would you care to explain how?"
+    },
+    "15": {
+        "Id": 15,
+        "Text": "Sorry but I am not allowed to give more detail. I will repeat the long description of your location."
+    },
+    "16": {
+        "Id": 16,
+        "Text": "It is now pitch dark. If you proceed you will likely fall into a pit."
+    },
+    "42": {
+        "Id": 42,
+        "Text": "Nothing happens."
+    },
+    "1001": {
+        "Id": 1001,
+        "Text": "It's not close enough."
+    }
+}
+
+
