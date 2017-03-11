@@ -44,12 +44,21 @@ namespace ColossalCave.Webhook
             services.AddMvc();
 
             // Add application services
-            services.AddScoped<IActionHandler, ActionHandler>();
             services.AddScoped<IResponseBuilder, ResponseBuilder>();
+            services.AddScoped<IMapHelper, MapHelper>();
+
+            // Add intent handlers
+            services.AddScoped<IActionHandler, Dispatcher>();
+            services.AddScoped<IInventoryHandler, InventoryHandler>();
+            services.AddScoped<ILookHandler, LookHandler>();
+            services.AddScoped<IMagicHandler, MagicHandler>();
+            services.AddScoped<IMoveDirectionHandler, MoveDirectionHandler>();
+            services.AddScoped<IMoveLocationHandler, MoveLocationHandler>();
 
             // Add the adventurer context
             services.AddScoped<AdventureContext>();
 
+            // Add providers
             services.AddSingleton<ILocationProvider, LocationProvider>();
             services.AddSingleton<IMessageProvider, MessageProvider>();
         }
@@ -59,10 +68,6 @@ namespace ColossalCave.Webhook
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
-
-            app.UseApplicationInsightsExceptionTelemetry();
 
             // Add basic authorization service
             app.UseMiddleware<BasicAuthorization>();

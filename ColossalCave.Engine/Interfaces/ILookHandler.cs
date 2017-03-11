@@ -1,7 +1,6 @@
 ﻿namespace ColossalCave.Engine.Interfaces
 {
-    public interface IActionHandler
+    public interface ILookHandler : IActionHandler
     {
-        void Handle();
     }
 }

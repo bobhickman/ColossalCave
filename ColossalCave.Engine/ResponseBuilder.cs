@@ -56,6 +56,11 @@ namespace ColossalCave.Engine
             AddToResponse(msg.SpeechOrText, pause, msg.TextOrSpeech);
         }
 
+        public void AddToResponse(Mnemonic mn, int pause = 0)
+        {
+            AddToResponse((int)mn, pause);
+        }
+
         public void PrefixResponse(string speech, string text = null)
         {
             _speechBuffer.Insert(0, speech);
@@ -79,6 +84,11 @@ namespace ColossalCave.Engine
             PrefixResponse(msg.SpeechOrText, pause, msg.TextOrSpeech);
         }
 
+        public void PrefixResponse(Mnemonic mn, int pause = 0)
+        {
+            PrefixResponse((int)mn, pause);
+        }
+
         public void ReplaceResponse(string speech, string text = null)
         {
             _speechBuffer.Clear();
@@ -90,6 +100,11 @@ namespace ColossalCave.Engine
         {
             var msg = _messageProvider.GetMessage(messageId);
             ReplaceResponse(msg.SpeechOrText, msg.TextOrSpeech);
+        }
+
+        public void ReplaceResponse(Mnemonic mn)
+        {
+            ReplaceResponse((int)mn);
         }
     }
 }

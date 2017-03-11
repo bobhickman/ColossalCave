@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ColossalCave.Engine.AssetModels;
 
 namespace ColossalCave.Engine
 {
@@ -25,11 +26,19 @@ namespace ColossalCave.Engine
 
         #region Context for the current adventurer
 
-        public int CurrentLocationId { get; set; }
+        public Location CurrentLocation { get; set; }
 
         public Flags Flags { get; set; }
 
         #endregion
+
+        public string GetParameterValue(string name)
+        {
+            var value = Parameters.ContainsKey(name) ? Parameters[name] : null;
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+            return value;
+        }
     }
 
     [Flags]

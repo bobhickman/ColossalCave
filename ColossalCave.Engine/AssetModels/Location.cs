@@ -11,7 +11,7 @@ namespace ColossalCave.Engine.AssetModels
         // Dict of directions to exits
         // These are 'normal' exits from the location invoked e.g. 'Go west'
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<Direction, Exit> Exits { get; set; }
+        public Dictionary<Directions, Exit> Exits { get; set; }
 
         // Locations that can be instantly traveled to.
         // These nearby locations can be traveled to by e.g. 'Go to the building'

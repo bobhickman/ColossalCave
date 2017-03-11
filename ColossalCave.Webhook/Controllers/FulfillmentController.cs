@@ -18,13 +18,16 @@ namespace ColossalCave.Webhook.Controllers
         private readonly ILogger _log;
 
         private readonly IActionHandler _handler;
+        private readonly ILocationProvider _locationProvider;
         private readonly AdventureContext _advContext;
 
         public FulfillmentController(ILogger<FulfillmentController> log, 
-            IActionHandler handler, AdventureContext context)
+            IActionHandler handler, ILocationProvider locationProvider,
+            AdventureContext context)
         {
             _log = log;
             _handler = handler;
+            _locationProvider = locationProvider;
             _advContext = context;
         }
 
@@ -38,7 +41,7 @@ namespace ColossalCave.Webhook.Controllers
                 _log.LogInformation("Intent is " + request.Result.Metadata.IntentName);
 
                 _advContext.ContextId = request.SessionId;
-                _advContext.CurrentLocationId = 1;
+                _advContext.CurrentLocation = _locationProvider.GetLocation(1);
                 _advContext.IntentName = request.Result.Metadata.IntentName;
                 _advContext.Parameters = request.Result.Parameters;
 
@@ -46,11 +49,15 @@ namespace ColossalCave.Webhook.Controllers
 
                 if (request.Result.Contexts != null && request.Result.Contexts.Length > 0)
                 {
-                    var requestAdvContext = request.Result.Contexts.FirstOrDefault(c => c.Name.EqualsNoCase("AdventureContext"));
+                    var requestAdvContext = request.Result.Contexts
+                        .FirstOrDefault(c => c.Name.EqualsNoCase("AdventureContext"));
                     if (requestAdvContext != null && requestAdvContext.Parameters != null)
                     {
                         if (requestAdvContext.Parameters.ContainsKey("CurrentLocationId"))
-                            context.CurrentLocationId = int.Parse(requestAdvContext.Parameters["CurrentLocationId"]);
+                        {
+                            var locationId =int.Parse(requestAdvContext.Parameters["CurrentLocationId"]);
+                            context.CurrentLocation = _locationProvider.GetLocation(locationId);
+                        }
                         if (requestAdvContext.Parameters.ContainsKey("Flags"))
                         {
                             var flagStr = requestAdvContext.Parameters["Flags"];
@@ -78,7 +85,7 @@ namespace ColossalCave.Webhook.Controllers
                             Lifespan = 100,
                             Parameters = new Dictionary<string, string>
                             {
-                                { "CurrentLocationId", context.CurrentLocationId.ToString() },
+                                { "CurrentLocationId", context.CurrentLocation.Id.ToString() },
                                 { "Flags", Convert.ToBase64String(BitConverter.GetBytes((Int32)context.Flags)) }
                             }
                         }
