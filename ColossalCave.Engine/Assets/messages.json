@@ -60,13 +60,41 @@
         "Id": 16,
         "Text": "It is now pitch dark. If you proceed you will likely fall into a pit."
     },
+    "24": {
+        "Id": 24,
+        "Text": "You are already carrying it!"
+    },
+    "29": {
+        "Id": 29,
+        "Text": "You aren't carrying it!"
+    },
     "42": {
         "Id": 42,
         "Text": "Nothing happens."
     },
+    "54": {
+        "Id": 54,
+        "Text": "OK."
+    },
+    "92": {
+        "Id": 92,
+        "Text": "You can't carry anything more. You'll have to drop something first."
+    },
+    "98": {
+        "Id": 98,
+        "Text": "You're not carrying anything."
+    },
+    "99": {
+        "Id": 99,
+        "Text": "You are currently holding the following:"
+    },
     "1001": {
         "Id": 1001,
         "Text": "It's not close enough."
+    },
+    "1002": {
+        "Id": 1002,
+        "Text": "It's not here."
     }
 }
 

@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Linq;
 using ColossalCave.Engine.Interfaces;
-using ColossalCave.Engine.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace ColossalCave.Engine.ActionHandlers
 {
-    public class MoveLocationHandler : BaseHandler, IMoveLocationHandler
+    public class MoveFeatureHandler : BaseHandler, IMoveFeatureHandler
     {
-        public MoveLocationHandler(ILogger<MoveLocationHandler> log,
-            IResponseBuilder responseBuilder,
-            IMessageProvider messageProvider,
-            ILocationProvider locationProvider,
-            IMapHelper mapHelper,
-            AdventureContext context)
+        public MoveFeatureHandler(ILogger<MoveFeatureHandler> log,
+        IResponseBuilder responseBuilder,
+        IMessageProvider messageProvider,
+        ILocationProvider locationProvider,
+        IMapHelper mapHelper,
+        AdventureContext context)
             : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
         {
         }
 
         public override void Handle()
         {
-            _log.LogInformation("Handling move-location");
+            _log.LogInformation("Handling move-feature");
 
             var curLoc = _advContext.CurrentLocation;
             _log.LogInformation($"Current location: {curLoc}");
@@ -29,20 +27,11 @@ namespace ColossalCave.Engine.ActionHandlers
             // movements
             var movementStr = _advContext.GetParameterValue("movements");
             // locations
-            var locationStr = _advContext.GetParameterValue("locations");
+            var featureStr = _advContext.GetParameterValue("items-fixed");
 
-            if (locationStr != null)
+            if (featureStr != null)
             {
-                var exit = curLoc.Exits.FirstOrDefault(
-                    x => x.Value.GoesTo.Name.EqualsNoCase(locationStr)).Value;
-                if (exit != null)
-                {
-                    newLoc = exit.GoesTo;
-                }
-                else
-                {
-                    _responseBuilder.PrefixResponse(Mnemonic.MoveTooFarAway, 1);
-                }
+                // TODO: Need implementation
             }
             else
             {

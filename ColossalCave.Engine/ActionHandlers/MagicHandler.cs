@@ -29,19 +29,19 @@ namespace ColossalCave.Engine.ActionHandlers
             if (Enum.TryParse(magicStr, true, out Magicwords magic))
             {
                 if (magic == Magicwords.XYZZY &&
-                    _advContext.Flags.HasFlag(Flags.KnowsXYZZY) &&
+                    _advContext.Flags.HasFlag(AdventureContextFlags.KnowsXYZZY) &&
                     (curLoc.Id == 3 || curLoc.Id == 11))
                 {
                     newLoc = curLoc.Id == 3 ? theMap[11] : theMap[3];
                 }
                 else if (magic == Magicwords.Plugh &&
-                    _advContext.Flags.HasFlag(Flags.KnowsPlugh) &&
+                    _advContext.Flags.HasFlag(AdventureContextFlags.KnowsPlugh) &&
                     (curLoc.Id == 3 || curLoc.Id == 33))
                 {
                     newLoc = curLoc.Id == 3 ? theMap[33] : theMap[3];
                 }
                 else if (magic == Magicwords.Plover &&
-                    _advContext.Flags.HasFlag(Flags.KnowsPlover) &&
+                    _advContext.Flags.HasFlag(AdventureContextFlags.KnowsPlover) &&
                     (curLoc.Id == 100 || curLoc.Id == 33))
                 {
                     newLoc = curLoc.Id == 100 ? theMap[33] : theMap[100];
@@ -53,7 +53,7 @@ namespace ColossalCave.Engine.ActionHandlers
                 }
             }
             else
-                _responseBuilder.PrefixResponse(Mnemonic.DontUnderstand, 1);
+                _responseBuilder.PrefixResponse(Mnemonic.VocabDontUnderstand, 1);
 
             _log.LogInformation($"New location: {newLoc}");
 

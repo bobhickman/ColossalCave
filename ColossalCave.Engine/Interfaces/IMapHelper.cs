@@ -5,5 +5,7 @@ namespace ColossalCave.Engine.Interfaces
     public interface IMapHelper
     {
         void Move(Location curLoc, Location newLoc);
+
+        void EnumerateItemsHere();
     }
 }

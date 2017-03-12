@@ -5,6 +5,7 @@
 
     public enum Actions
     {
+        Undefined = 0,
         Open,
         Take,
         Insert,
@@ -34,6 +35,7 @@
 
     public enum Commands
     {
+        Undefined = 0,
         Quit,
         Inventory,
         Score,
@@ -50,6 +52,7 @@
 
     public enum Directions
     {
+        Undefined = 0,
         North,
         South,
         East,
@@ -70,9 +73,10 @@
         Under
     }
 
-    public enum Items
+    public enum ItemsMoveable
     {
-        Key,
+        Undefined = 0,
+        Keys,
         Lantern,
         Cage,
         Rod,
@@ -93,6 +97,7 @@
 
     public enum ItemsFixed
     {
+        Undefined = 0,
         Grate,
         Steps,
         Door,
@@ -114,6 +119,7 @@
 
     public enum Magicwords
     {
+        Undefined = 0,
         XYZZY,
         Plugh,
         Plover,
@@ -130,6 +136,7 @@
 
     public enum Mobs
     {
+        Undefined = 0,
         Pirate,
         Dragon,
         Troll,
@@ -139,6 +146,7 @@
 
     public enum Movements
     {
+        Undefined = 0,
         Walk,
         Run,
         Crawl,
@@ -147,11 +155,13 @@
         Enter,
         Leave,
         Descend,
-        Cross
+        Cross,
+        Approach
     }
 
     public enum Treasures
     {
+        Undefined = 0,
         Nugget,
         Diamonds,
         Silver,
@@ -171,6 +181,7 @@
 
     public enum Visuals
     {
+        Undefined = 0,
         Look,
         Examine,
         Peer

@@ -27,7 +27,9 @@ namespace ColossalCave.Engine
         public void Move(Location curLoc, Location newLoc)
         {
             if (newLoc.Id == 11 && newLoc.IsLight)
-                _advContext.Flags |= Flags.KnowsXYZZY;
+                _advContext.Flags |= AdventureContextFlags.KnowsXYZZY;
+
+            bool isMoved = false;
 
             // Check if the new location has no exits. 
             // If so, add msg and go back to old loc.
@@ -35,7 +37,7 @@ namespace ColossalCave.Engine
             {
                 if (!newLoc.IsLight)
                 {
-                    _responseBuilder.AddToResponse(Mnemonic.PitchDark, 1);
+                    _responseBuilder.AddToResponse(Mnemonic.MovePitchDark, 1);
                     _responseBuilder.AddToResponse(
                         curLoc.Description,
                         curLoc.Description);
@@ -57,10 +59,21 @@ namespace ColossalCave.Engine
                 if (newLoc.IsLight)
                     _responseBuilder.AddToResponse(newLoc.Description);
                 else
-                    _responseBuilder.AddToResponse(Mnemonic.PitchDark);
-
+                    _responseBuilder.AddToResponse(Mnemonic.MovePitchDark);
+                isMoved = true;
                 _advContext.CurrentLocation = newLoc;
             }
+
+            // Look for items laying around
+            if (isMoved && newLoc.IsLight)
+                EnumerateItemsHere();
+        }
+
+        public void EnumerateItemsHere()
+        {
+            var itemsHere = _advContext.GetItemsAtCurrentLocation();
+            foreach (var item in itemsHere)
+                _responseBuilder.AddToResponse(item.FoundDescriptions[0].Item3);
         }
     }
 }

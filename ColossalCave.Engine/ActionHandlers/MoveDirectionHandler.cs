@@ -45,18 +45,18 @@ namespace ColossalCave.Engine.ActionHandlers
                             newLoc = exit.GoesTo;
                     }
                     else
-                        _responseBuilder.PrefixResponse(Mnemonic.CantGoThatWay, 1);
+                        _responseBuilder.PrefixResponse(Mnemonic.MoveCantGoThatWay, 1);
                 }
                 else
-                    _responseBuilder.PrefixResponse(Mnemonic.DontUnderstand, 1);
+                    _responseBuilder.PrefixResponse(Mnemonic.VocabDontUnderstand, 1);
             }
             else // No direction
             {
                 // Try to do the movement
                 if (Enum.TryParse(movementStr, true, out Movements move))
-                    _responseBuilder.PrefixResponse(Mnemonic.NeedDirection, 1);
+                    _responseBuilder.PrefixResponse(Mnemonic.MoveNeedDirection, 1);
                 else
-                    _responseBuilder.PrefixResponse(Mnemonic.DontUnderstand, 1);
+                    _responseBuilder.PrefixResponse(Mnemonic.VocabDontUnderstand, 1);
             }
             _log.LogInformation($"New location: {newLoc}");
 

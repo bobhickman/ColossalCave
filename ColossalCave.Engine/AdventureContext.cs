@@ -1,15 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace ColossalCave.Engine
 {
     public class AdventureContext
     {
+        public const int MaxInventory = 7;
+
+        //private readonly ILogger _log;
+        private readonly IItemProvider _itemProvider;
+        private readonly ILocationProvider _locationProvider;
+
         public string ContextId { get; set; }
 
+        /// <summary>
+        /// Up to 31 flags for adventure state
+        /// </summary>
+        public AdventureContextFlags Flags { get; set; }
+
+        public AdventureContext(//ILogger log,
+            IItemProvider itemProvider,
+            ILocationProvider locationProvider)
+        {
+            //_log = log;
+            _itemProvider = itemProvider;
+            _locationProvider = locationProvider;
+
+            // Initialize everything as if game is new
+            SetCurrentLocation(1);
+
+            _itemLocations = new Dictionary<ItemsMoveable, int>();
+            foreach(var itemLoc in _itemProvider.Items)
+                _itemLocations.Add(itemLoc.ItemEnum, itemLoc.InitialLocationId);
+        }
+
         #region Inputs
-        
+
         public string IntentName { get; set; }
 
         public Dictionary<string, string> Parameters { get; set; }
@@ -24,13 +55,104 @@ namespace ColossalCave.Engine
 
         #endregion
 
-        #region Context for the current adventurer
+        #region Location management
 
+        /// <summary>
+        /// The current location of the adventurer
+        /// </summary>
         public Location CurrentLocation { get; set; }
 
-        public Flags Flags { get; set; }
+        public void SetCurrentLocation(int locationId)
+        {
+            CurrentLocation = _locationProvider.GetLocation(locationId);
+        }
 
         #endregion
+        
+        #region Item management
+
+        private Dictionary<ItemsMoveable,int> _itemLocations { get; set; }
+
+        public bool IsItemInInventory(ItemsMoveable item)
+        {
+            return IsItemAtLocation(item, 0);
+        }
+
+        public bool IsItemAtCurrentLocation(ItemsMoveable item)
+        {
+            return IsItemAtLocation(item, CurrentLocation.Id);
+        }
+
+        public List<Item> GetItemsAtCurrentLocation()
+        {
+            var result = new List<Item>();
+            var itemMoveables = _itemLocations
+                .Where(il => il.Value == CurrentLocation.Id)
+                .Select(il => il.Key)
+                .ToList();
+            if (itemMoveables.Count > 0)
+            {
+                foreach (var im in itemMoveables)
+                    result.Add(_itemProvider.GetItem(im));
+            }
+            return result;
+        }
+
+        public bool IsItemAtLocation(ItemsMoveable item, int locationId)
+        {
+            return _itemLocations[item] == locationId;
+        }
+
+        public bool IsInventoryEmpty
+        {
+            get { return _itemLocations.Where(il => il.Value == 0).Count() == 0; }
+        }
+
+        public bool IsInventoryFull
+        {
+            get { return _itemLocations.Where(il => il.Value == 0).Count() >= MaxInventory; }
+        }
+
+        public void AddToInventory(ItemsMoveable item)
+        {
+            _itemLocations[item] = 0;
+        }
+
+        public void RemoveItemFromInventory(ItemsMoveable item)
+        {
+            MoveItemToLocation(item, CurrentLocation.Id);
+        }
+
+        public void MoveItemToLocation(ItemsMoveable item, int locationId)
+        {
+            _itemLocations[item] = locationId;
+        }
+
+        public string ItemLocationsToString()
+        {
+            // "itemid,locid|itemid,locid|itemid,locid"
+            var buf = new StringBuilder();
+            foreach(var il in _itemLocations)
+                buf.Append($"{il.Key},{il.Value}|");
+            return buf.ToString(0, buf.Length - 1);
+        }
+
+        public void ItemLocationsFromString(string str)
+        {
+            // "itemid,locid|itemid,locid|itemid,locid"
+            _itemLocations = new Dictionary<ItemsMoveable, int>();
+            var itemStrs = str.Split('|');
+            foreach (var istr in itemStrs)
+            {
+                var pieces = istr.Split(',');
+                if (Enum.TryParse(pieces[0], true, out ItemsMoveable item))
+                    _itemLocations.Add(item, int.Parse(pieces[1]));
+            }
+        }
+
+        #endregion
+
+        #region Parameter management
 
         public string GetParameterValue(string name)
         {
@@ -39,10 +161,12 @@ namespace ColossalCave.Engine
                 return null;
             return value;
         }
+
+        #endregion
     }
 
     [Flags]
-    public enum Flags
+    public enum AdventureContextFlags
     {
         None = 0x00000000,
         KnowsXYZZY = 0x00000001,
@@ -51,8 +175,8 @@ namespace ColossalCave.Engine
         KnowsFee = 0x00000008,
         GrateIsUnlocked = 0x00000010,
         GrateIsOpen = 0x00000020,
-        Bit07 = 0x00000040,
-        Bit08 = 0x00000080,
+        LanternIsOn = 0x00000040,
+        RodIsMarked = 0x00000080,
         Bit09 = 0x00000100,
         Bit10 = 0x00000200,
         Bit11 = 0x00000400,

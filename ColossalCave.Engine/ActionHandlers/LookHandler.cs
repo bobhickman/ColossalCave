@@ -26,14 +26,17 @@ namespace ColossalCave.Engine.ActionHandlers
                 if (curLoc.IsLight)
                     _responseBuilder.AddToResponse(curLoc.Description);
                 else
-                    _responseBuilder.AddToResponse(Mnemonic.PitchDark);
+                    _responseBuilder.AddToResponse(Mnemonic.MovePitchDark);
             }
             else
             {
                 if (curLoc.IsLight)
+                {
                     _responseBuilder.AddToResponse(curLoc.Description);
+                    _mapHelper.EnumerateItemsHere();
+                }
                 else
-                    _responseBuilder.AddToResponse(Mnemonic.PitchDark);
+                    _responseBuilder.AddToResponse(Mnemonic.MovePitchDark);
             }
         }
     }

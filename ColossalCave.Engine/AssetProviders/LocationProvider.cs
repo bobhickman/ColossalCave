@@ -349,7 +349,7 @@ A note on the wall says 'Magic word <say-as interpret-as='characters'>XYZZY</say
             // Uncomment this to write out the entire unresolved map as json
             // Useful to seed the locations.json file.
             // Make sure you redirect output to a file to capture it.
-            var json = MakeJson();
+            var json = JsonConvert.SerializeObject(_locations);
             System.Console.WriteLine(json);
 #endif
             ResolveMap();
@@ -360,7 +360,7 @@ A note on the wall says 'Magic word <say-as interpret-as='characters'>XYZZY</say
         /// </summary>
         private void ResolveMap()
         {
-            _log.LogInformation("Resolving the map...");
+            _log?.LogInformation("Resolving the map...");
             foreach(var loc in _locations.Values)
             {
                 // Resolve exits
@@ -406,16 +406,6 @@ A note on the wall says 'Magic word <say-as interpret-as='characters'>XYZZY</say
                     loc.FastTravel = resolvedFastTravel;
                 }
             }
-        }
-
-        /// <summary>
-        /// Helper/debug converts the unresolved map to json
-        /// </summary>
-        /// <returns></returns>
-        public string MakeJson()
-        {
-            var json = JsonConvert.SerializeObject(_locations);
-            return json;
         }
     }
 }

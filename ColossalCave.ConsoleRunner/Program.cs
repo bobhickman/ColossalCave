@@ -1,6 +1,7 @@
 ﻿using System;
 using ColossalCave.Engine.AssetProviders;
 using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine;
 
 namespace ColossalCave.ConsoleRunner
 {
@@ -18,8 +19,12 @@ namespace ColossalCave.ConsoleRunner
             //Console.WriteLine(m.Text);
 
             var lp = new LocationProvider(null);
-            var l = lp.GetLocation(2);
+            //var l = lp.GetLocation(2);
             //Console.WriteLine(l.Description);
+
+            var ip = new ItemProvider(null, lp);
+            var i = ip.GetItem(ItemsMoveable.Keys);
+            Console.WriteLine(i.Description);
 
             Console.ReadLine();
         }

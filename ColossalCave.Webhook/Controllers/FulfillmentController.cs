@@ -18,16 +18,19 @@ namespace ColossalCave.Webhook.Controllers
         private readonly ILogger _log;
 
         private readonly IActionHandler _handler;
-        private readonly ILocationProvider _locationProvider;
+        //private readonly IItemProvider _itemProvider;
+        //private readonly ILocationProvider _locationProvider;
         private readonly AdventureContext _advContext;
 
         public FulfillmentController(ILogger<FulfillmentController> log, 
-            IActionHandler handler, ILocationProvider locationProvider,
+            IActionHandler handler, 
+            //ILocationProvider locationProvider, IItemProvider itemProvider, 
             AdventureContext context)
         {
             _log = log;
             _handler = handler;
-            _locationProvider = locationProvider;
+            //_itemProvider = itemProvider;
+            //_locationProvider = locationProvider;
             _advContext = context;
         }
 
@@ -40,55 +43,21 @@ namespace ColossalCave.Webhook.Controllers
                 _log.LogInformation("Received fulfillment request.");
                 _log.LogInformation("Intent is " + request.Result.Metadata.IntentName);
 
-                _advContext.ContextId = request.SessionId;
-                _advContext.CurrentLocation = _locationProvider.GetLocation(1);
-                _advContext.IntentName = request.Result.Metadata.IntentName;
-                _advContext.Parameters = request.Result.Parameters;
-
-                var context = _advContext;
-
-                if (request.Result.Contexts != null && request.Result.Contexts.Length > 0)
-                {
-                    var requestAdvContext = request.Result.Contexts
-                        .FirstOrDefault(c => c.Name.EqualsNoCase("AdventureContext"));
-                    if (requestAdvContext != null && requestAdvContext.Parameters != null)
-                    {
-                        if (requestAdvContext.Parameters.ContainsKey("CurrentLocationId"))
-                        {
-                            var locationId =int.Parse(requestAdvContext.Parameters["CurrentLocationId"]);
-                            context.CurrentLocation = _locationProvider.GetLocation(locationId);
-                        }
-                        if (requestAdvContext.Parameters.ContainsKey("Flags"))
-                        {
-                            var flagStr = requestAdvContext.Parameters["Flags"];
-                            var bytes = Convert.FromBase64String(flagStr);
-                            context.Flags = (Flags)BitConverter.ToInt32(bytes, 0);
-                        }
-                    }
-                };
+                ApiContextToAdvContext(request);
 
                 _handler.Handle();
 
                 _log.LogInformation("Creating response...");
-                _log.LogInformation(context.SpeechResponse);
+                _log.LogInformation(_advContext.SpeechResponse);
                 var response = new ApiAiFulfillmentResponse
                 {
-                    Speech = context.SpeechResponse,
-                    DisplayText = context.TextResponse,
+                    Speech = _advContext.SpeechResponse,
+                    DisplayText = _advContext.TextResponse,
                     Source = "apiWebhook",
                     //Data = "",
-                    ContextOut = new[] 
+                    ContextOut = new[]
                     {
-                        new ApiAiContext
-                        {
-                            Name = "AdventureContext",
-                            Lifespan = 100,
-                            Parameters = new Dictionary<string, string>
-                            {
-                                { "CurrentLocationId", context.CurrentLocation.Id.ToString() },
-                                { "Flags", Convert.ToBase64String(BitConverter.GetBytes((Int32)context.Flags)) }
-                            }
-                        }
+                        AdvContextToApiContext()
                     },
                     //FollowupEvent = ""
                 };
@@ -103,6 +72,53 @@ namespace ColossalCave.Webhook.Controllers
                     Speech = ex.Message,
                     DisplayText = ex.Message
                 };
+            }
+        }
+
+        private ApiAiContext AdvContextToApiContext()
+        {
+            return new ApiAiContext
+            {
+                Name = "AdventureContext",
+                Lifespan = 100,
+                Parameters = new Dictionary<string, string>
+                {
+                    { "CurrentLocationId", _advContext.CurrentLocation.Id.ToString() },
+                    { "Flags", Convert.ToBase64String(BitConverter.GetBytes((Int32)_advContext.Flags)) },
+                    { "ItemLocations", _advContext.ItemLocationsToString() }
+//                    { "Inventory", string.Join(",", _advContext.Inventory) }
+                }
+            };
+        }
+
+        private void ApiContextToAdvContext(ApiAiFulfillmentRequest request)
+        {
+            _advContext.ContextId = request.SessionId;
+            //_advContext.CurrentLocation = _locationProvider.GetLocation(1);
+            _advContext.SetCurrentLocation(1);
+            _advContext.IntentName = request.Result.Metadata.IntentName;
+            _advContext.Parameters = request.Result.Parameters;
+
+            var requestAdvContext = request.Result.Contexts
+                .FirstOrDefault(c => c.Name.EqualsNoCase("AdventureContext"));
+            if (requestAdvContext != null && requestAdvContext.Parameters != null)
+            {
+                if (requestAdvContext.Parameters.ContainsKey("CurrentLocationId"))
+                {
+                    var locationId = int.Parse(requestAdvContext.Parameters["CurrentLocationId"]);
+                    _advContext.SetCurrentLocation(locationId);
+                    //_advContext.CurrentLocation = _locationProvider.GetLocation(locationId);
+                }
+                if (requestAdvContext.Parameters.ContainsKey("Flags"))
+                {
+                    var flagStr = requestAdvContext.Parameters["Flags"];
+                    var bytes = Convert.FromBase64String(flagStr);
+                    _advContext.Flags = (AdventureContextFlags)BitConverter.ToInt32(bytes, 0);
+                }
+                if (requestAdvContext.Parameters.ContainsKey("ItemLocations"))
+                {
+                    _advContext.ItemLocationsFromString(requestAdvContext.Parameters["ItemLocations"]);
+                }
             }
         }
     }

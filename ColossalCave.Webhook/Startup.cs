@@ -53,12 +53,14 @@ namespace ColossalCave.Webhook
             services.AddScoped<ILookHandler, LookHandler>();
             services.AddScoped<IMagicHandler, MagicHandler>();
             services.AddScoped<IMoveDirectionHandler, MoveDirectionHandler>();
+            services.AddScoped<IMoveFeatureHandler, MoveFeatureHandler>();
             services.AddScoped<IMoveLocationHandler, MoveLocationHandler>();
 
             // Add the adventurer context
             services.AddScoped<AdventureContext>();
 
             // Add providers
+            services.AddSingleton<IItemProvider, ItemProvider>();
             services.AddSingleton<ILocationProvider, LocationProvider>();
             services.AddSingleton<IMessageProvider, MessageProvider>();
         }

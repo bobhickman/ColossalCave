@@ -12,6 +12,7 @@ namespace ColossalCave.Engine.ActionHandlers
         private readonly ILookHandler _lookHandler;
         private readonly IMagicHandler _magicHandler;
         private readonly IMoveDirectionHandler _moveDirHandler;
+        private readonly IMoveFeatureHandler _moveFeatureHandler;
         private readonly IMoveLocationHandler _moveLocHandler;
 
         private readonly IResponseBuilder _responseBuilder;
@@ -23,6 +24,7 @@ namespace ColossalCave.Engine.ActionHandlers
             ILookHandler lookHandler,
             IMagicHandler magicHandler,
             IMoveDirectionHandler moveDirHandler,
+            IMoveFeatureHandler moveFeatureHandler,
             IMoveLocationHandler moveLocHandler,
             IResponseBuilder responseBuilder,
             AdventureContext context)
@@ -32,6 +34,7 @@ namespace ColossalCave.Engine.ActionHandlers
             _lookHandler = lookHandler;
             _magicHandler = magicHandler;
             _moveDirHandler = moveDirHandler;
+            _moveFeatureHandler = moveFeatureHandler;
             _moveLocHandler = moveLocHandler;
             _responseBuilder = responseBuilder;
             _advContext = context;
@@ -39,14 +42,14 @@ namespace ColossalCave.Engine.ActionHandlers
 
         public void Handle()
         {
-            if (_advContext.IntentName == "addtoinventory")
+            if (_advContext.IntentName == "inventory")
                 _inventoryHandler.Handle();
             else if (_advContext.IntentName.EqualsNoCase("move-direction"))
                 _moveDirHandler.Handle();
             else if (_advContext.IntentName.EqualsNoCase("move-location"))
                 _moveLocHandler.Handle();
-            //else if (_advContext.IntentName.EqualsNoCase("move-feature"))
-            //    MoveFeature(_advContext);
+            else if (_advContext.IntentName.EqualsNoCase("move-feature"))
+                _moveFeatureHandler.Handle();
             else if (_advContext.IntentName == "magic")
                 _magicHandler.Handle();
             else if (_advContext.IntentName == "lookaround")
