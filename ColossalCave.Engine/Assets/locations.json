@@ -19,7 +19,7 @@
         "IsLight": true,
         "Id": 1,
         "Name": "road",
-        "ShortDescription": "at the end of the road",
+        "ShortDescription": "You are at the end of the road.",
         "Description": "You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully."
     },
     "2": {
@@ -36,7 +36,7 @@
         "IsLight": true,
         "Id": 2,
         "Name": "hill",
-        "ShortDescription": "on a hill in the road",
+        "ShortDescription": "You are on a hill in the road.",
         "Description": "You have walked up a hill, still in the forest. The road slopes back down the other side of the hill. There is a building in the distance."
     },
     "3": {
@@ -49,7 +49,7 @@
         "IsLight": true,
         "Id": 3,
         "Name": "house",
-        "ShortDescription": "inside a building",
+        "ShortDescription": "You are inside a well house.",
         "Description": "You are inside a building, a well house for a large spring."
     },
     "4": {
@@ -69,7 +69,7 @@
         "IsLight": true,
         "Id": 4,
         "Name": "valley",
-        "ShortDescription": "in a valley",
+        "ShortDescription": "You are in a valley.",
         "Description": "You are in a valley in the forest beside a stream tumbling along a rocky bed."
     },
     "5": {
@@ -100,7 +100,7 @@
         "IsLight": true,
         "Id": 5,
         "Name": "forest",
-        "ShortDescription": "in the forest",
+        "ShortDescription": "You are in the forest.",
         "Description": "You are in open forest, with a deep valley to one side."
     },
     "6": {
@@ -119,7 +119,7 @@
         "IsLight": true,
         "Id": 6,
         "Name": "forest",
-        "ShortDescription": "in the forest",
+        "ShortDescription": "You are in the forest.",
         "Description": "You are in open forest near both a valley and a road."
     },
     "7": {
@@ -139,7 +139,7 @@
         "IsLight": true,
         "Id": 7,
         "Name": "slit",
-        "ShortDescription": "at a slit in the streambed",
+        "ShortDescription": "You are at a slit in the streambed.",
         "Description": "At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock."
     },
     "8": {
@@ -160,7 +160,7 @@
         "IsLight": true,
         "Id": 8,
         "Name": "depression",
-        "ShortDescription": "outside of a grate",
+        "ShortDescription": "You are outside of a grate.",
         "Description": "You are in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression."
     },
     "9": {
@@ -178,7 +178,7 @@
         "IsLight": true,
         "Id": 9,
         "Name": "entrance",
-        "ShortDescription": "below a grate",
+        "ShortDescription": "You are below a grate.",
         "Description": "You are in a small chamber beneath a 3 by 3 steel grate to the surface. A low crawl over cobbles leads inward to the west."
     },
     "10": {
@@ -196,7 +196,7 @@
         "IsLight": true,
         "Id": 10,
         "Name": "crawl",
-        "ShortDescription": "in a cobble crawl",
+        "ShortDescription": "You are in a cobble crawl.",
         "Description": "You are crawling over cobbles in a low passage. There is a dim light at the east end of the passage."
     },
     "11": {
@@ -215,13 +215,13 @@
         ],
         "Id": 11,
         "Name": "debris",
-        "ShortDescription": "in the debris room",
+        "ShortDescription": "You are in a room full of debris.",
         "Description": "\r\nYou are in a debris room filled with stuff washed in from the surface. \r\nA low wide passage with cobbles becomes plugged with mud and debris here, but an awkward canyon leads upward and west. \r\n<break time='1s'/>\r\nA note on the wall says 'Magic word <say-as interpret-as='characters'>XYZZY</say-as>'."
     },
     "79": {
         "Id": 79,
-        "Name": "stream",
-        "ShortDescription": "at sewer pipes",
+        "Name": "pipes",
+        "ShortDescription": "You are at sewer pipes. You can't get out this way.",
         "Description": "The stream flows out through a pair of 1 foot diameter sewer pipes. It would be advisable to use the exit."
     }
 }

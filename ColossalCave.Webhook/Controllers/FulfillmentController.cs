@@ -85,8 +85,8 @@ namespace ColossalCave.Webhook.Controllers
                 {
                     { "CurrentLocationId", _advContext.CurrentLocation.Id.ToString() },
                     { "Flags", Convert.ToBase64String(BitConverter.GetBytes((Int32)_advContext.Flags)) },
-                    { "ItemLocations", _advContext.ItemLocationsToString() }
-//                    { "Inventory", string.Join(",", _advContext.Inventory) }
+                    { "ItemLocations", _advContext.ItemLocationsToJson() },
+                    { "ItemsMoveableStates", _advContext.StatesToJson() }
                 }
             };
         }
@@ -94,7 +94,6 @@ namespace ColossalCave.Webhook.Controllers
         private void ApiContextToAdvContext(ApiAiFulfillmentRequest request)
         {
             _advContext.ContextId = request.SessionId;
-            //_advContext.CurrentLocation = _locationProvider.GetLocation(1);
             _advContext.SetCurrentLocation(1);
             _advContext.IntentName = request.Result.Metadata.IntentName;
             _advContext.Parameters = request.Result.Parameters;
@@ -107,7 +106,6 @@ namespace ColossalCave.Webhook.Controllers
                 {
                     var locationId = int.Parse(requestAdvContext.Parameters["CurrentLocationId"]);
                     _advContext.SetCurrentLocation(locationId);
-                    //_advContext.CurrentLocation = _locationProvider.GetLocation(locationId);
                 }
                 if (requestAdvContext.Parameters.ContainsKey("Flags"))
                 {
@@ -117,7 +115,11 @@ namespace ColossalCave.Webhook.Controllers
                 }
                 if (requestAdvContext.Parameters.ContainsKey("ItemLocations"))
                 {
-                    _advContext.ItemLocationsFromString(requestAdvContext.Parameters["ItemLocations"]);
+                    _advContext.ItemLocationsFromJson(requestAdvContext.Parameters["ItemLocations"]);
+                }
+                if(requestAdvContext.Parameters.ContainsKey("ItemsMoveableStates"))
+                {
+                    _advContext.StatesFromJson(requestAdvContext.Parameters["ItemsMoveableStates"]);
                 }
             }
         }

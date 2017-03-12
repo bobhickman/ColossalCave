@@ -1,7 +1,10 @@
 ﻿
-namespace ColossalCave.Engine
+namespace ColossalCave.Engine.Enumerations
 {
-    public enum Mnemonic
+    /// <summary>
+    /// Handy mnemonics to get access to messages.
+    /// </summary>
+    public enum MsgMnemonic
     {
         MoveCantGoThatWay = 9,
         MoveNeedDirection = 10,

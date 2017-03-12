@@ -1,4 +1,4 @@
-﻿namespace ColossalCave.Engine
+﻿namespace ColossalCave.Engine.Enumerations
 {
     // All of these enums map 1-1 to api.ai entities.
     // Except for the locations entities, which are in the map.
@@ -76,23 +76,23 @@
     public enum ItemsMoveable
     {
         Undefined = 0,
-        Keys,
-        Lantern,
-        Cage,
-        Rod,
-        Bird,
-        Pillow,
-        Magazine,
-        Food,
-        Bottle,
-        Mirror,
-        Batteries,
-        Water,
-        Oil,
-        Axe,
-        Knife,
-        Drawing,
-        Shards
+        Keys = 1,
+        Lantern = 2,
+        Cage = 3,
+        Rod = 4,
+        Bird = 5,
+        Pillow = 6,
+        Magazine = 7,
+        Food = 8,
+        Bottle = 9,
+        Mirror = 10,
+        Batteries = 11,
+        Water = 12,
+        Oil = 13,
+        Axe = 14,
+        Knife = 15,
+        Drawing = 16,
+        Shards = 17
     }
 
     public enum ItemsFixed

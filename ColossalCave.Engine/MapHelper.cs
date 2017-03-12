@@ -1,4 +1,5 @@
 ﻿using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -9,24 +10,33 @@ namespace ColossalCave.Engine
         private readonly ILogger _log;
 
         private readonly IResponseBuilder _responseBuilder;
+        private readonly IItemProvider _itemProvider;
         private readonly ILocationProvider _locationProvider;
 
         private AdventureContext _advContext;
 
         public MapHelper(ILogger<MapHelper> log,
             IResponseBuilder responseBuilder,
+            IItemProvider itemProvider,
             ILocationProvider locationProvider,
             AdventureContext context)
         {
             _log = log;
             _responseBuilder = responseBuilder;
+            _itemProvider = itemProvider;
             _locationProvider = locationProvider;
             _advContext = context;
         }
 
-        public void Move(Location curLoc, Location newLoc)
+        public bool Move(Location newLoc)
         {
-            if (newLoc.Id == 11 && newLoc.IsLight)
+            var curLoc = _advContext.CurrentLocation;
+            var curLocLighted = _advContext.AdventurerHasALitLamp() || 
+                _advContext.IsCurrentLocationLight();
+            var newLocLighted = _advContext.AdventurerHasALitLamp() || 
+                _advContext.IsLocationLight(newLoc);
+
+            if (newLoc.Id == 11 && newLocLighted)
                 _advContext.Flags |= AdventureContextFlags.KnowsXYZZY;
 
             bool isMoved = false;
@@ -35,45 +45,54 @@ namespace ColossalCave.Engine
             // If so, add msg and go back to old loc.
             if (newLoc.Exits == null)
             {
-                if (!newLoc.IsLight)
+                if (!newLocLighted)
                 {
-                    _responseBuilder.AddToResponse(Mnemonic.MovePitchDark, 1);
-                    _responseBuilder.AddToResponse(
-                        curLoc.Description,
-                        curLoc.Description);
+                    _responseBuilder.AddToResponse(MsgMnemonic.MovePitchDark, 1);
                 }
                 else
                 {
                     _responseBuilder.AddToResponse(
                         newLoc.Description, 1,
                         newLoc.Description + "\n");
-                    _responseBuilder.AddToResponse(
-                        curLoc.Description,
-                        curLoc.Description);
                 }
-                newLoc.Id = curLoc.Id;
-                _advContext.CurrentLocation = curLoc;
+                _responseBuilder.AddToResponse(
+                    curLoc.Description,
+                    curLoc.Description);
             }
             else
             {
-                if (newLoc.IsLight)
+                if (newLocLighted)
+                {
                     _responseBuilder.AddToResponse(newLoc.Description);
+                }
                 else
-                    _responseBuilder.AddToResponse(Mnemonic.MovePitchDark);
+                {
+                    _responseBuilder.AddToResponse(MsgMnemonic.MovePitchDark);
+                }
                 isMoved = true;
                 _advContext.CurrentLocation = newLoc;
+                if (newLocLighted)
+                    EnumerateItemsHere();
             }
 
-            // Look for items laying around
-            if (isMoved && newLoc.IsLight)
-                EnumerateItemsHere();
+            return isMoved;
         }
 
         public void EnumerateItemsHere()
         {
             var itemsHere = _advContext.GetItemsAtCurrentLocation();
             foreach (var item in itemsHere)
-                _responseBuilder.AddToResponse(item.FoundDescriptions[0].Item3);
+            {
+                var states = _advContext.GetItemStates(item.ItemEnum);
+                if (states == null)
+                {
+                    _responseBuilder.AddToResponse(item.FoundDescriptions[0].Item2, 1);
+                }
+                else
+                {
+                    _responseBuilder.AddToResponse(_itemProvider.GetItemFoundDescription(item, states), 1);
+                }
+            }
         }
     }
 }

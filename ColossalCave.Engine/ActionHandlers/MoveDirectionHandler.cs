@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -45,22 +46,23 @@ namespace ColossalCave.Engine.ActionHandlers
                             newLoc = exit.GoesTo;
                     }
                     else
-                        _responseBuilder.PrefixResponse(Mnemonic.MoveCantGoThatWay, 1);
+                        _responseBuilder.PrefixResponse(MsgMnemonic.MoveCantGoThatWay, 1);
                 }
                 else
-                    _responseBuilder.PrefixResponse(Mnemonic.VocabDontUnderstand, 1);
+                    _responseBuilder.PrefixResponse(MsgMnemonic.VocabDontUnderstand, 1);
             }
             else // No direction
             {
                 // Try to do the movement
                 if (Enum.TryParse(movementStr, true, out Movements move))
-                    _responseBuilder.PrefixResponse(Mnemonic.MoveNeedDirection, 1);
+                    _responseBuilder.PrefixResponse(MsgMnemonic.MoveNeedDirection, 1);
                 else
-                    _responseBuilder.PrefixResponse(Mnemonic.VocabDontUnderstand, 1);
+                    _responseBuilder.PrefixResponse(MsgMnemonic.VocabDontUnderstand, 1);
             }
             _log.LogInformation($"New location: {newLoc}");
 
-            _mapHelper.Move(curLoc, newLoc);
+            if (newLoc != curLoc)
+                _mapHelper.Move(newLoc);
         }
 
         private Location RandomizeExit(Exit exit)

@@ -8,8 +8,9 @@ namespace ColossalCave.Engine.ActionHandlers
     {
         private readonly ILogger _log;
 
+        private readonly IExamineHandler _examineHandler;
         private readonly IInventoryHandler _inventoryHandler;
-        private readonly ILookHandler _lookHandler;
+        private readonly ILookAroundHandler _lookHandler;
         private readonly IMagicHandler _magicHandler;
         private readonly IMoveDirectionHandler _moveDirHandler;
         private readonly IMoveFeatureHandler _moveFeatureHandler;
@@ -20,8 +21,9 @@ namespace ColossalCave.Engine.ActionHandlers
         private AdventureContext _advContext;
 
         public Dispatcher(ILogger<Dispatcher> log,
+            IExamineHandler examineHandler,
             IInventoryHandler inventoryHandler,
-            ILookHandler lookHandler,
+            ILookAroundHandler lookHandler,
             IMagicHandler magicHandler,
             IMoveDirectionHandler moveDirHandler,
             IMoveFeatureHandler moveFeatureHandler,
@@ -30,6 +32,7 @@ namespace ColossalCave.Engine.ActionHandlers
             AdventureContext context)
         {
             _log = log;
+            _examineHandler = examineHandler;
             _inventoryHandler = inventoryHandler;
             _lookHandler = lookHandler;
             _magicHandler = magicHandler;
@@ -44,16 +47,18 @@ namespace ColossalCave.Engine.ActionHandlers
         {
             if (_advContext.IntentName == "inventory")
                 _inventoryHandler.Handle();
+            else if (_advContext.IntentName == "examination")
+                _examineHandler.Handle();
+            else if (_advContext.IntentName == "lookaround")
+                _lookHandler.Handle();
+            else if (_advContext.IntentName == "magic")
+                _magicHandler.Handle();
             else if (_advContext.IntentName.EqualsNoCase("move-direction"))
                 _moveDirHandler.Handle();
             else if (_advContext.IntentName.EqualsNoCase("move-location"))
                 _moveLocHandler.Handle();
             else if (_advContext.IntentName.EqualsNoCase("move-feature"))
                 _moveFeatureHandler.Handle();
-            else if (_advContext.IntentName == "magic")
-                _magicHandler.Handle();
-            else if (_advContext.IntentName == "lookaround")
-                _lookHandler.Handle();
 
             _advContext.SpeechResponse = _responseBuilder.Speech;
             _advContext.TextResponse = _responseBuilder.Text;

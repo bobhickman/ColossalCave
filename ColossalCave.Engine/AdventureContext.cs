@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
+using ColossalCave.Engine.Utilities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace ColossalCave.Engine
 {
@@ -37,6 +40,17 @@ namespace ColossalCave.Engine
             _itemLocations = new Dictionary<ItemsMoveable, int>();
             foreach(var itemLoc in _itemProvider.Items)
                 _itemLocations.Add(itemLoc.ItemEnum, itemLoc.InitialLocationId);
+
+            _itemsMoveableStates = new Dictionary<ItemsMoveable, List<ItemStateValuePair>>();
+            foreach(var im in _itemProvider.Items)
+            {
+                if (im.DefaultStates != null)
+                {
+                    _itemsMoveableStates[im.ItemEnum] = new List<ItemStateValuePair>();
+                    foreach (var pair in im.DefaultStates)
+                        _itemsMoveableStates[im.ItemEnum].Add(pair);
+                }
+            }
         }
 
         #region Inputs
@@ -55,6 +69,31 @@ namespace ColossalCave.Engine
 
         #endregion
 
+        #region Light/Dark management
+
+        public bool IsCurrentLocationLight()
+        {
+            return IsLocationLight(CurrentLocation);
+        }
+
+        public bool IsLocationLight(Location location)
+        {
+            if (location.IsLight == true)
+                return true;
+            else if (IsItemAtLocation(ItemsMoveable.Lantern, location.Id) &&
+                GetItemState(ItemsMoveable.Lantern, ItemState.LanternIsOn) == 1)
+                return true;
+            return false;
+        }
+
+        public bool AdventurerHasALitLamp()
+        {
+            return IsItemInInventory(ItemsMoveable.Lantern) && 
+                GetItemState(ItemsMoveable.Lantern, ItemState.LanternIsOn) == 1;
+        }
+
+        #endregion
+
         #region Location management
 
         /// <summary>
@@ -68,10 +107,52 @@ namespace ColossalCave.Engine
         }
 
         #endregion
-        
-        #region Item management
 
-        private Dictionary<ItemsMoveable,int> _itemLocations { get; set; }
+        #region Item state management
+
+        // States of all items moveable and fixed, mobs and treasures
+        private Dictionary<ItemsMoveable, List<ItemStateValuePair>> _itemsMoveableStates;
+        //private Dictionary<ItemsFixed, List<NameValuePair>> _itemsFixedStates;
+        //private Dictionary<Mobs, List<NameValuePair>> _mobsStates;
+        //private Dictionary<Treasures, List<NameValuePair>> _treasuresStates;
+
+        public List<ItemStateValuePair> GetItemStates(ItemsMoveable item)
+        {
+            return _itemsMoveableStates.ContainsKey(item) ? _itemsMoveableStates[item] : null;
+        }
+
+        public int GetItemState(ItemsMoveable item, ItemState stateName)
+        {
+            return _itemsMoveableStates[item]
+                .Where(p => p.ItemStateName == stateName)
+                .First()
+                .Value;
+        }
+
+        public void SetItemState(ItemsMoveable item, ItemState stateName, int value)
+        {
+            var nvp = _itemsMoveableStates[item]
+                .Where(p => p.ItemStateName == stateName)
+                .First();
+            nvp.Value = value;
+        }
+        
+        public string StatesToJson()
+        {
+            return JsonConvert.SerializeObject(_itemsMoveableStates);
+        }
+
+        public void StatesFromJson(string json)
+        {
+            _itemsMoveableStates = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable, List<ItemStateValuePair>>>(json);
+        }
+
+        #endregion
+
+        #region Item location management
+
+        // Locations of moveable items 
+        private Dictionary<ItemsMoveable, int> _itemLocations;
 
         public bool IsItemInInventory(ItemsMoveable item)
         {
@@ -80,7 +161,7 @@ namespace ColossalCave.Engine
 
         public bool IsItemAtCurrentLocation(ItemsMoveable item)
         {
-            return IsItemAtLocation(item, CurrentLocation.Id);
+            return IsItemAtLocation(item, CurrentLocation.Id) || IsItemInInventory(item);
         }
 
         public List<Item> GetItemsAtCurrentLocation()
@@ -100,7 +181,10 @@ namespace ColossalCave.Engine
 
         public bool IsItemAtLocation(ItemsMoveable item, int locationId)
         {
-            return _itemLocations[item] == locationId;
+            if ((_itemLocations[item] == locationId) ||
+                (CurrentLocation.Id == locationId && IsItemInInventory(item)))
+                return true;
+            return false;
         }
 
         public bool IsInventoryEmpty
@@ -118,7 +202,7 @@ namespace ColossalCave.Engine
             _itemLocations[item] = 0;
         }
 
-        public void RemoveItemFromInventory(ItemsMoveable item)
+        public void RemoveFromInventory(ItemsMoveable item)
         {
             MoveItemToLocation(item, CurrentLocation.Id);
         }
@@ -128,26 +212,14 @@ namespace ColossalCave.Engine
             _itemLocations[item] = locationId;
         }
 
-        public string ItemLocationsToString()
+        public string ItemLocationsToJson()
         {
-            // "itemid,locid|itemid,locid|itemid,locid"
-            var buf = new StringBuilder();
-            foreach(var il in _itemLocations)
-                buf.Append($"{il.Key},{il.Value}|");
-            return buf.ToString(0, buf.Length - 1);
+            return JsonConvert.SerializeObject(_itemLocations);
         }
 
-        public void ItemLocationsFromString(string str)
+        public void ItemLocationsFromJson(string json)
         {
-            // "itemid,locid|itemid,locid|itemid,locid"
-            _itemLocations = new Dictionary<ItemsMoveable, int>();
-            var itemStrs = str.Split('|');
-            foreach (var istr in itemStrs)
-            {
-                var pieces = istr.Split(',');
-                if (Enum.TryParse(pieces[0], true, out ItemsMoveable item))
-                    _itemLocations.Add(item, int.Parse(pieces[1]));
-            }
+            _itemLocations = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable,int>>(json);
         }
 
         #endregion
@@ -173,10 +245,10 @@ namespace ColossalCave.Engine
         KnowsPlugh = 0x00000002,
         KnowsPlover = 0x00000004,
         KnowsFee = 0x00000008,
-        GrateIsUnlocked = 0x00000010,
-        GrateIsOpen = 0x00000020,
-        LanternIsOn = 0x00000040,
-        RodIsMarked = 0x00000080,
+        Bit05 = 0x00000010,
+        Bit06 = 0x00000020,
+        Bit07 = 0x00000040,
+        Bit08 = 0x00000080,
         Bit09 = 0x00000100,
         Bit10 = 0x00000200,
         Bit11 = 0x00000400,

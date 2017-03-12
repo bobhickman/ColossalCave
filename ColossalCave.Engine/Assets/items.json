@@ -1,42 +1,92 @@
 [
-    {
-        "ItemEnum": 1,
-        "InitialLocationId": 3,
-        "Id": 1,
-        "Name": "Keys",
-        "ShortDescription": "Keys",
-        "Description": "set of keys"
-    },
-    {
-        "ItemEnum": 2,
-        "InitialLocationId": 3,
-        "Id": 2,
-        "Name": "Lantern",
-        "ShortDescription": "Brass lantern",
-        "Description": "shiny brass lamp"
-    },
-    {
-        "ItemEnum": 3,
-        "InitialLocationId": 10,
-        "Id": 3,
-        "Name": "Cage",
-        "ShortDescription": "Wicker cage",
-        "Description": "small wicker cage"
-    },
-    {
-        "ItemEnum": 4,
-        "InitialLocationId": 11,
-        "Id": 4,
-        "Name": "Rod",
-        "ShortDescription": "Black rod",
-        "Description": "three foot black rod with a rusty star on the end"
-    },
-    {
-        "ItemEnum": 8,
-        "InitialLocationId": 3,
-        "Id": 8,
-        "Name": "Food",
-        "ShortDescription": "Food",
-        "Description": "tasty food"
-    }
+  {
+    "ItemEnum": 1,
+    "InitialLocationId": 3,
+    "FoundDescriptions": [
+      {
+        "Item1": null,
+        "Item2": "There are some keys on the ground here."
+      }
+    ],
+    "Id": 1,
+    "Name": "Keys",
+    "ShortDescription": "Keys",
+    "Description": "set of keys"
+  },
+  {
+    "ItemEnum": 2,
+    "InitialLocationId": 3,
+    "FoundDescriptions": [
+      {
+        "Item1": {
+          "Name": "LanternIsOn",
+          "Value": 0
+        },
+        "Item2": "There is a shiny brass lamp nearby."
+      },
+      {
+        "Item1": {
+          "Name": "LanternIsOn",
+          "Value": 1
+        },
+        "Item2": "There is a lamp shining nearby."
+      }
+    ],
+    "Id": 2,
+    "Name": "Lantern",
+    "ShortDescription": "Brass lantern",
+    "Description": "shiny brass lamp"
+  },
+  {
+    "ItemEnum": 3,
+    "InitialLocationId": 10,
+    "FoundDescriptions": [
+      {
+        "Item1": null,
+        "Item2": "There is a small wicker cage discarded nearby."
+      }
+    ],
+    "Id": 3,
+    "Name": "Cage",
+    "ShortDescription": "Wicker cage",
+    "Description": "small wicker cage"
+  },
+  {
+    "ItemEnum": 4,
+    "InitialLocationId": 11,
+    "FoundDescriptions": [
+      {
+        "Item1": {
+          "Name": "RodIsMarked",
+          "Value": 0
+        },
+        "Item2": "A three foot black rod with a rusty star on an end lies nearby."
+      },
+      {
+        "Item1": {
+          "Name": "RodIsMarked",
+          "Value": 1
+        },
+        "Item2": "A three foot black rod with a rusty mark on an end lies nearby."
+      }
+    ],
+    "Id": 4,
+    "Name": "Rod",
+    "ShortDescription": "Black rod",
+    "Description": "three foot black rod"
+  },
+  {
+    "ItemEnum": 8,
+    "InitialLocationId": 3,
+    "FoundDescriptions": [
+      {
+        "Item1": null,
+        "Item2": "There is food here."
+      }
+    ],
+    "Id": 8,
+    "Name": "Food",
+    "ShortDescription": "Food",
+    "Description": "tasty food"
+  }
 ]

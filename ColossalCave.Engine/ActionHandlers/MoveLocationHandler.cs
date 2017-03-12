@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using ColossalCave.Engine.Utilities;
 using Microsoft.Extensions.Logging;
@@ -41,7 +42,7 @@ namespace ColossalCave.Engine.ActionHandlers
                 }
                 else
                 {
-                    _responseBuilder.PrefixResponse(Mnemonic.MoveTooFarAway, 1);
+                    _responseBuilder.PrefixResponse(MsgMnemonic.MoveTooFarAway, 1);
                 }
             }
             else
@@ -51,11 +52,11 @@ namespace ColossalCave.Engine.ActionHandlers
                 {
                 }
                 else
-                    _responseBuilder.PrefixResponse(Mnemonic.VocabDontUnderstand, 1);
+                    _responseBuilder.PrefixResponse(MsgMnemonic.VocabDontUnderstand, 1);
             }
             _log.LogInformation($"New location: {newLoc}");
 
-            _mapHelper.Move(curLoc, newLoc);
+            _mapHelper.Move(newLoc);
         }
     }
 }

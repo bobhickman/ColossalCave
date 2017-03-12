@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
+using ColossalCave.Engine.Utilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -65,73 +67,91 @@ namespace ColossalCave.Engine.AssetProviders
 #else // hard-coded
             _items = new List<Item>()
             {
-                new Item
+                new Item // 1
                 {
                     Id = (int)ItemsMoveable.Keys,
                     ItemEnum = ItemsMoveable.Keys,
                     Name = ItemsMoveable.Keys.ToString(),
-                    ShortDescription = "Keys",
-                    Description = "set of keys",
+                    ShortDescription = "A set of keys",
+                    Description = "It's a large metal ring with a bunch of keys on it.",
                     InitialLocationId = 3,
-                    FoundDescriptions = new List<Tuple<AdventureContextFlags, bool, string>>
+                    FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
                     {
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.None, false, "There are some keys on the ground here."),
+                        new Tuple<ItemStateValuePair, string>(null, "There are some keys on the ground here."),
                     }
                 },
-                new Item
+                new Item // 2
                 {
                     Id = (int)ItemsMoveable.Lantern,
                     ItemEnum = ItemsMoveable.Lantern,
                     Name = ItemsMoveable.Lantern.ToString(),
-                    ShortDescription = "Brass lantern",
-                    Description = "shiny brass lamp",
+                    ShortDescription = "A shiny brass lantern",
+                    Description = "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off'.",
                     InitialLocationId = 3,
-                    FoundDescriptions = new List<Tuple<AdventureContextFlags, bool, string>>
+                    DefaultStates = new List<ItemStateValuePair>
                     {
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.LanternIsOn, false, "There is a shiny brass lamp nearby."),
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.LanternIsOn, true, "There is a lamp shining nearby.")
+                        new ItemStateValuePair(ItemState.LanternIsOn, 1)
+                    },
+                    FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
+                    {
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.LanternIsOn, 0), "There is a shiny brass lamp nearby."),
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.LanternIsOn, 1), "There is a lamp shining nearby.")
+                    },
+                    ExamineDescriptions = new List<Tuple<ItemStateValuePair, string>>
+                    {
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.LanternIsOn, 0), "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off', which is currently in the 'Off' position."),
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.LanternIsOn, 1), "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off', which is currently in the 'On' position.")
                     }
                 },
-                new Item
-                {
-                    Id = (int)ItemsMoveable.Food,
-                    ItemEnum = ItemsMoveable.Food,
-                    Name = ItemsMoveable.Food.ToString(),
-                    ShortDescription = "Food",
-                    Description = "tasty food",
-                    InitialLocationId = 3,
-                    FoundDescriptions = new List<Tuple<AdventureContextFlags, bool, string>>
-                    {
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.None, false, "There is food here."),
-                    }
-                },
-                new Item
+                new Item // 3
                 {
                     Id = (int)ItemsMoveable.Cage,
                     ItemEnum = ItemsMoveable.Cage,
                     Name = ItemsMoveable.Cage.ToString(),
-                    ShortDescription = "Wicker cage",
-                    Description = "small wicker cage",
+                    ShortDescription = "A small wicker cage",
+                    Description = "The cage appears to be hand-woven wicker. It has a small door on the side.",
                     InitialLocationId = 10,
-                    FoundDescriptions = new List<Tuple<AdventureContextFlags, bool, string>>
+                    FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
                     {
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.None, false, "There is a small wicker cage discarded nearby."),
+                        new Tuple<ItemStateValuePair, string>(null, "There is a small wicker cage discarded nearby."),
                     }
                 },
-                new Item
+                new Item // 4
                 {
                     Id = (int)ItemsMoveable.Rod,
                     ItemEnum = ItemsMoveable.Rod,
                     Name = ItemsMoveable.Rod.ToString(),
-                    ShortDescription = "Black rod",
-                    Description = "three foot black rod",
+                    ShortDescription = "A three foot black rod",
+                    Description = "The rod is about three feet long and black.",
                     InitialLocationId = 11,
-                    FoundDescriptions = new List<Tuple<AdventureContextFlags, bool, string>>
+                    DefaultStates = new List<ItemStateValuePair>
                     {
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.RodIsMarked, false, "A three foot black rod with a rusty star on an end lies nearby."),
-                        new Tuple<AdventureContextFlags, bool, string>(AdventureContextFlags.RodIsMarked, true, "A three foot black rod with a rusty mark on an end lies nearby.")
+                        new ItemStateValuePair(ItemState.RodIsMarked, 0)
+                    },
+                    FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
+                    {
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.RodIsMarked, 0), "A three foot black rod with a rusty star on an end lies nearby."),
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.RodIsMarked, 1), "A three foot black rod with a rusty mark on an end lies nearby.")
+                    },
+                    ExamineDescriptions = new List<Tuple<ItemStateValuePair, string>>
+                    {
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.RodIsMarked, 0), "The rod is about three feet long and black. It has a rusty star attached at one end."),
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.RodIsMarked, 1), "The rod is about three feet long and black. It has a rusty mark on one end.")
                     }
-                }
+                },
+                new Item // 8
+                {
+                    Id = (int)ItemsMoveable.Food,
+                    ItemEnum = ItemsMoveable.Food,
+                    Name = ItemsMoveable.Food.ToString(),
+                    ShortDescription = "Some tasty food",
+                    Description = "It appears to be some sort of fruit and nut based nutritional bar.",
+                    InitialLocationId = 3,
+                    FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
+                    {
+                        new Tuple<ItemStateValuePair, string>(null, "There is food here."),
+                    }
+                },
             };
 
             // Uncomment this to write out the entire unresolved item dictionary as json
@@ -155,5 +175,50 @@ namespace ColossalCave.Engine.AssetProviders
         //            _log?.LogError($"Location {item.InitialLocation.Id} is undefined.");
         //    }
         //}
+
+        public string GetItemFoundDescription(Item item, List<ItemStateValuePair> states)
+        {
+            if (item.ItemEnum == ItemsMoveable.Lantern)
+            {
+                return GetSingleFoundDescription(item, states, ItemState.LanternIsOn);
+            }
+            else if (item.ItemEnum == ItemsMoveable.Rod)
+            {
+                return GetSingleFoundDescription(item, states, ItemState.RodIsMarked);
+            }
+            return item.Description;
+        }
+
+        public string GetItemExamineDescription(Item item, List<ItemStateValuePair> states)
+        {
+            if (item.ItemEnum == ItemsMoveable.Lantern)
+            {
+                return GetSingleExamineDescription(item, states, ItemState.LanternIsOn);
+            }
+            else if (item.ItemEnum == ItemsMoveable.Rod)
+            {
+                return GetSingleExamineDescription(item, states, ItemState.RodIsMarked);
+            }
+            return item.Description;
+        }
+
+        private string GetSingleFoundDescription(Item item,
+            List<ItemStateValuePair> states, ItemState itemStateName)
+        {
+            var state = states.Find(p => p.ItemStateName == itemStateName).Value;
+            return item.FoundDescriptions
+                .Where(t => t.Item1.ItemStateName == itemStateName && t.Item1.Value == state)
+                .First().Item2;
+        }
+
+        private string GetSingleExamineDescription(Item item,
+            List<ItemStateValuePair> states, ItemState itemStateName)
+        {
+            var state = states.Find(p => p.ItemStateName == itemStateName).Value;
+            return item.ExamineDescriptions
+                .Where(t => t.Item1.ItemStateName == itemStateName && t.Item1.Value == state)
+                .First().Item2;
+        }
+
     }
 }

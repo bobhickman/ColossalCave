@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using ColossalCave.Engine.AssetModels;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
 

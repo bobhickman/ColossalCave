@@ -23,8 +23,16 @@ namespace ColossalCave.ConsoleRunner
             //Console.WriteLine(l.Description);
 
             var ip = new ItemProvider(null, lp);
-            var i = ip.GetItem(ItemsMoveable.Keys);
-            Console.WriteLine(i.Description);
+            //var i = ip.GetItem(ItemsMoveable.Keys);
+            //Console.WriteLine(i.Description);
+            foreach (var item in ip.Items)
+            {
+                Console.WriteLine($"{item}");
+                foreach (var desc in item.FoundDescriptions)
+                    Console.WriteLine($"{desc.Item1} - {desc.Item2}");
+            }
+
+            var context = new AdventureContext(ip, lp);
 
             Console.ReadLine();
         }

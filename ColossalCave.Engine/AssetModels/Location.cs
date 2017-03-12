@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ColossalCave.Engine.Enumerations;
 using Newtonsoft.Json;
 
 namespace ColossalCave.Engine.AssetModels

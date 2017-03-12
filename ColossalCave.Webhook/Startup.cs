@@ -49,8 +49,9 @@ namespace ColossalCave.Webhook
 
             // Add intent handlers
             services.AddScoped<IActionHandler, Dispatcher>();
+            services.AddScoped<IExamineHandler, ExamineHandler>();
             services.AddScoped<IInventoryHandler, InventoryHandler>();
-            services.AddScoped<ILookHandler, LookHandler>();
+            services.AddScoped<ILookAroundHandler, LookAroundHandler>();
             services.AddScoped<IMagicHandler, MagicHandler>();
             services.AddScoped<IMoveDirectionHandler, MoveDirectionHandler>();
             services.AddScoped<IMoveFeatureHandler, MoveFeatureHandler>();

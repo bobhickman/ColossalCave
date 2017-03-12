@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 
 namespace ColossalCave.Engine
@@ -56,7 +57,7 @@ namespace ColossalCave.Engine
             AddToResponse(msg.SpeechOrText, pause, msg.TextOrSpeech);
         }
 
-        public void AddToResponse(Mnemonic mn, int pause = 0)
+        public void AddToResponse(MsgMnemonic mn, int pause = 0)
         {
             AddToResponse((int)mn, pause);
         }
@@ -84,7 +85,7 @@ namespace ColossalCave.Engine
             PrefixResponse(msg.SpeechOrText, pause, msg.TextOrSpeech);
         }
 
-        public void PrefixResponse(Mnemonic mn, int pause = 0)
+        public void PrefixResponse(MsgMnemonic mn, int pause = 0)
         {
             PrefixResponse((int)mn, pause);
         }
@@ -102,7 +103,7 @@ namespace ColossalCave.Engine
             ReplaceResponse(msg.SpeechOrText, msg.TextOrSpeech);
         }
 
-        public void ReplaceResponse(Mnemonic mn)
+        public void ReplaceResponse(MsgMnemonic mn)
         {
             ReplaceResponse((int)mn);
         }

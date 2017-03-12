@@ -1,4 +1,5 @@
 ﻿using System;
+using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -32,22 +33,22 @@ namespace ColossalCave.Engine.ActionHandlers
                     {
                         if (_advContext.IsItemInInventory(item))
                         {
-                            _responseBuilder.AddToResponse(Mnemonic.InvAlreadyCarrying);
+                            _responseBuilder.AddToResponse(MsgMnemonic.InvAlreadyCarrying);
                         }
                         else
                         {
                             if (!_advContext.IsItemAtCurrentLocation(item))
                             {
-                                _responseBuilder.AddToResponse(Mnemonic.ItemNotHere);
+                                _responseBuilder.AddToResponse(MsgMnemonic.ItemNotHere);
                             }
                             else if (_advContext.IsInventoryFull)
                             {
-                                _responseBuilder.AddToResponse(Mnemonic.InvFull);
+                                _responseBuilder.AddToResponse(MsgMnemonic.InvFull);
                             }
                             else
                             {
                                 _advContext.AddToInventory(item);
-                                _responseBuilder.AddToResponse(Mnemonic.OK);
+                                _responseBuilder.AddToResponse(MsgMnemonic.OK);
                             }
                         }
                     }
@@ -55,29 +56,29 @@ namespace ColossalCave.Engine.ActionHandlers
                     {
                         if (_advContext.IsItemInInventory(item))
                         {
-                            _advContext.RemoveItemFromInventory(item);
-                            _responseBuilder.AddToResponse(Mnemonic.OK);
+                            _advContext.RemoveFromInventory(item);
+                            _responseBuilder.AddToResponse(MsgMnemonic.OK);
                         }
                         else if (_advContext.IsInventoryEmpty)
                         {
-                            _responseBuilder.AddToResponse(Mnemonic.InvNotCarryingAnything);
+                            _responseBuilder.AddToResponse(MsgMnemonic.InvNotCarryingAnything);
                         }
                         else
                         {
-                            _responseBuilder.AddToResponse(Mnemonic.InvNotCarrying);
+                            _responseBuilder.AddToResponse(MsgMnemonic.InvNotCarrying);
                         }
                     }
                 }
                 else
                 {
                     _log.LogError($"Unknown inventory item: {itemStr}");
-                    _responseBuilder.AddToResponse(Mnemonic.VocabDontUnderstand);
+                    _responseBuilder.AddToResponse(MsgMnemonic.VocabDontUnderstand);
                 }
             }
             else
             {
                 _log.LogError($"Unknown action: {actionStr}");
-                _responseBuilder.AddToResponse(Mnemonic.VocabDontUnderstand);
+                _responseBuilder.AddToResponse(MsgMnemonic.VocabDontUnderstand);
             }
         }
     }
