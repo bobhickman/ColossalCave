@@ -179,8 +179,8 @@
     ],
     "Id": 5,
     "Name": "Bird",
-    "ShortDescription": "",
-    "Description": ""
+    "ShortDescription": "A little bird",
+    "Description": "The bird is very small."
   },
   {
     "ItemEnum": 8,

@@ -44,11 +44,13 @@ namespace ColossalCave.Webhook
             services.AddMvc();
 
             // Add application services
-            services.AddScoped<IResponseBuilder, ResponseBuilder>();
+            services.AddScoped<IAdventureContextHelper, AdventureContextHelper>();
             services.AddScoped<IMapHelper, MapHelper>();
+            services.AddScoped<IResponseBuilder, ResponseBuilder>();
 
             // Add intent handlers
             services.AddScoped<IActionHandler, Dispatcher>();
+            services.AddScoped<IControlHandler, ControlHandler>();
             services.AddScoped<IExamineHandler, ExamineHandler>();
             services.AddScoped<IInventoryHandler, InventoryHandler>();
             services.AddScoped<ILookAroundHandler, LookAroundHandler>();

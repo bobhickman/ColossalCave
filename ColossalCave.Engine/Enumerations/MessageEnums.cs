@@ -19,7 +19,7 @@ namespace ColossalCave.Engine.Enumerations
         OK = 54,
         InvFull = 92,
         InvNotCarryingAnything = 98,
-        InvList = 99,
+        InvListHeader = 99,
         // Messages above 1000 are not part of original Advent
         MoveTooFarAway = 1001,
         ItemNotHere = 1002 // Can't find equivalent in Advent

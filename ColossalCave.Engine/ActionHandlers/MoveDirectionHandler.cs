@@ -10,12 +10,13 @@ namespace ColossalCave.Engine.ActionHandlers
     public class MoveDirectionHandler : BaseHandler, IMoveDirectionHandler
     {
         public MoveDirectionHandler(ILogger<MoveDirectionHandler> log,
-            IResponseBuilder responseBuilder,
-            IMessageProvider messageProvider,
-            ILocationProvider locationProvider,
-            IMapHelper mapHelper,
-            AdventureContext context)
-            : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
+           IResponseBuilder responseBuilder,
+           IMessageProvider messageProvider,
+           ILocationProvider locationProvider,
+           IAdventureContextHelper advHelper,
+           IMapHelper mapHelper,
+           AdventureContext context)
+            : base(log, responseBuilder, messageProvider, locationProvider, advHelper, mapHelper)
         {
         }
 
@@ -23,14 +24,14 @@ namespace ColossalCave.Engine.ActionHandlers
         {
             _log.LogInformation("Handling move-direction");
 
-            var curLoc = _advContext.CurrentLocation;
+            var curLoc = _advHelper.CurrentLocation;
             _log.LogInformation($"Current location: {curLoc}");
             var newLoc = curLoc;
 
             // movements
-            var movementStr = _advContext.GetParameterValue("movements");
+            var movementStr = _advHelper.GetParameterValue("movements");
             // directions
-            var directionStr = _advContext.GetParameterValue("directions");
+            var directionStr = _advHelper.GetParameterValue("directions");
 
             if (directionStr != null)
             {

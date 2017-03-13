@@ -8,6 +8,7 @@ namespace ColossalCave.Engine.ActionHandlers
     {
         private readonly ILogger _log;
 
+        private readonly IControlHandler _controlHandler;
         private readonly IExamineHandler _examineHandler;
         private readonly IInventoryHandler _inventoryHandler;
         private readonly ILookAroundHandler _lookHandler;
@@ -21,6 +22,7 @@ namespace ColossalCave.Engine.ActionHandlers
         private AdventureContext _advContext;
 
         public Dispatcher(ILogger<Dispatcher> log,
+            IControlHandler controlHandler,
             IExamineHandler examineHandler,
             IInventoryHandler inventoryHandler,
             ILookAroundHandler lookHandler,
@@ -32,6 +34,7 @@ namespace ColossalCave.Engine.ActionHandlers
             AdventureContext context)
         {
             _log = log;
+            _controlHandler = controlHandler;
             _examineHandler = examineHandler;
             _inventoryHandler = inventoryHandler;
             _lookHandler = lookHandler;
@@ -45,7 +48,9 @@ namespace ColossalCave.Engine.ActionHandlers
 
         public void Handle()
         {
-            if (_advContext.IntentName == "inventory")
+            if (_advContext.IntentName == "control")
+                _controlHandler.Handle();
+            else if (_advContext.IntentName == "inventory")
                 _inventoryHandler.Handle();
             else if (_advContext.IntentName == "examination")
                 _examineHandler.Handle();

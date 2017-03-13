@@ -13,31 +13,31 @@ namespace ColossalCave.Engine
         private readonly IItemProvider _itemProvider;
         private readonly ILocationProvider _locationProvider;
 
-        private AdventureContext _advContext;
+        private readonly IAdventureContextHelper _advHelper;
 
         public MapHelper(ILogger<MapHelper> log,
             IResponseBuilder responseBuilder,
             IItemProvider itemProvider,
             ILocationProvider locationProvider,
-            AdventureContext context)
+            IAdventureContextHelper advHelper)
         {
             _log = log;
             _responseBuilder = responseBuilder;
             _itemProvider = itemProvider;
             _locationProvider = locationProvider;
-            _advContext = context;
+            _advHelper = advHelper;
         }
 
         public bool Move(Location newLoc)
         {
-            var curLoc = _advContext.CurrentLocation;
-            var curLocLighted = _advContext.AdventurerHasALitLamp() || 
-                _advContext.IsCurrentLocationLight();
-            var newLocLighted = _advContext.AdventurerHasALitLamp() || 
-                _advContext.IsLocationLight(newLoc);
+            var curLoc = _advHelper.CurrentLocation;
+            var curLocLighted = _advHelper.AdventurerHasALitLamp || 
+                _advHelper.IsCurrentLocationLight;
+            var newLocLighted = _advHelper.AdventurerHasALitLamp || 
+                _advHelper.IsLocationLight(newLoc);
 
             if (newLoc.Id == 11 && newLocLighted)
-                _advContext.Flags |= AdventureContextFlags.KnowsXYZZY;
+                _advHelper.SetFlag(AdventureContextFlags.KnowsXYZZY);
 
             bool isMoved = false;
 
@@ -70,7 +70,7 @@ namespace ColossalCave.Engine
                     _responseBuilder.AddToResponse(MsgMnemonic.MovePitchDark);
                 }
                 isMoved = true;
-                _advContext.CurrentLocation = newLoc;
+                _advHelper.CurrentLocation = newLoc;
                 if (newLocLighted)
                     EnumerateItemsHere();
             }
@@ -80,12 +80,12 @@ namespace ColossalCave.Engine
 
         public void EnumerateItemsHere()
         {
-            var itemsHere = _advContext.GetItemsAtCurrentLocation();
+            var itemsHere = _advHelper.GetItemsAtCurrentLocation();
             if (itemsHere.Count > 0)
                 _responseBuilder.AddToResponse("", 1);
             foreach (var item in itemsHere)
             {
-                var states = _advContext.GetItemStates(item.ItemEnum);
+                var states = _advHelper.GetItemStates(item.ItemEnum);
                 if (states == null)
                 {
                     _responseBuilder.AddToResponse(item.FoundDescriptions[0].Item2, 1);

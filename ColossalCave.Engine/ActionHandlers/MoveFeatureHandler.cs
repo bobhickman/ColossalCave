@@ -8,12 +8,13 @@ namespace ColossalCave.Engine.ActionHandlers
     public class MoveFeatureHandler : BaseHandler, IMoveFeatureHandler
     {
         public MoveFeatureHandler(ILogger<MoveFeatureHandler> log,
-        IResponseBuilder responseBuilder,
-        IMessageProvider messageProvider,
-        ILocationProvider locationProvider,
-        IMapHelper mapHelper,
-        AdventureContext context)
-            : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
+           IResponseBuilder responseBuilder,
+           IMessageProvider messageProvider,
+           ILocationProvider locationProvider,
+           IAdventureContextHelper advHelper,
+           IMapHelper mapHelper,
+           AdventureContext context)
+            : base(log, responseBuilder, messageProvider, locationProvider, advHelper, mapHelper)
         {
         }
 
@@ -21,14 +22,14 @@ namespace ColossalCave.Engine.ActionHandlers
         {
             _log.LogInformation("Handling move-feature");
 
-            var curLoc = _advContext.CurrentLocation;
+            var curLoc = _advHelper.CurrentLocation;
             _log.LogInformation($"Current location: {curLoc}");
             var newLoc = curLoc;
 
             // movements
-            var movementStr = _advContext.GetParameterValue("movements");
+            var movementStr = _advHelper.GetParameterValue("movements");
             // locations
-            var featureStr = _advContext.GetParameterValue("items-fixed");
+            var featureStr = _advHelper.GetParameterValue("items-fixed");
 
             if (featureStr != null)
             {

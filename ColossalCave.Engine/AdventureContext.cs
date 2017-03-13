@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ColossalCave.Engine.AssetModels;
 using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
-using ColossalCave.Engine.Utilities;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace ColossalCave.Engine
@@ -15,7 +11,6 @@ namespace ColossalCave.Engine
     {
         public const int MaxInventory = 7;
 
-        //private readonly ILogger _log;
         private readonly IItemProvider _itemProvider;
         private readonly ILocationProvider _locationProvider;
 
@@ -26,29 +21,28 @@ namespace ColossalCave.Engine
         /// </summary>
         public AdventureContextFlags Flags { get; set; }
 
-        public AdventureContext(//ILogger log,
+        public AdventureContext(
             IItemProvider itemProvider,
             ILocationProvider locationProvider)
         {
-            //_log = log;
             _itemProvider = itemProvider;
             _locationProvider = locationProvider;
 
             // Initialize everything as if game is new
             SetCurrentLocation(1);
 
-            _itemLocations = new Dictionary<ItemsMoveable, int>();
+            ItemLocations = new Dictionary<ItemsMoveable, int>();
             foreach(var itemLoc in _itemProvider.Items)
-                _itemLocations.Add(itemLoc.ItemEnum, itemLoc.InitialLocationId);
+                ItemLocations.Add(itemLoc.ItemEnum, itemLoc.InitialLocationId);
 
-            _itemsMoveableStates = new Dictionary<ItemsMoveable, List<ItemStateValuePair>>();
+            ItemsMoveableStates = new Dictionary<ItemsMoveable, List<ItemStateValuePair>>();
             foreach(var im in _itemProvider.Items)
             {
                 if (im.DefaultStates != null)
                 {
-                    _itemsMoveableStates[im.ItemEnum] = new List<ItemStateValuePair>();
+                    ItemsMoveableStates[im.ItemEnum] = new List<ItemStateValuePair>();
                     foreach (var pair in im.DefaultStates)
-                        _itemsMoveableStates[im.ItemEnum].Add(pair);
+                        ItemsMoveableStates[im.ItemEnum].Add(pair);
                 }
             }
         }
@@ -69,31 +63,6 @@ namespace ColossalCave.Engine
 
         #endregion
 
-        #region Light/Dark management
-
-        public bool IsCurrentLocationLight()
-        {
-            return IsLocationLight(CurrentLocation);
-        }
-
-        public bool IsLocationLight(Location location)
-        {
-            if (location.IsLight == true)
-                return true;
-            else if (IsItemAtLocation(ItemsMoveable.Lantern, location.Id) &&
-                GetItemState(ItemsMoveable.Lantern, ItemState.LanternIsOn) == 1)
-                return true;
-            return false;
-        }
-
-        public bool AdventurerHasALitLamp()
-        {
-            return IsItemInInventory(ItemsMoveable.Lantern) && 
-                GetItemState(ItemsMoveable.Lantern, ItemState.LanternIsOn) == 1;
-        }
-
-        #endregion
-
         #region Location management
 
         /// <summary>
@@ -111,40 +80,19 @@ namespace ColossalCave.Engine
         #region Item state management
 
         // States of all items moveable and fixed, mobs and treasures
-        private Dictionary<ItemsMoveable, List<ItemStateValuePair>> _itemsMoveableStates;
+        public Dictionary<ItemsMoveable, List<ItemStateValuePair>> ItemsMoveableStates;
         //private Dictionary<ItemsFixed, List<NameValuePair>> _itemsFixedStates;
         //private Dictionary<Mobs, List<NameValuePair>> _mobsStates;
         //private Dictionary<Treasures, List<NameValuePair>> _treasuresStates;
 
-        public List<ItemStateValuePair> GetItemStates(ItemsMoveable item)
-        {
-            return _itemsMoveableStates.ContainsKey(item) ? _itemsMoveableStates[item] : null;
-        }
-
-        public int GetItemState(ItemsMoveable item, ItemState stateName)
-        {
-            return _itemsMoveableStates[item]
-                .Where(p => p.ItemStateName == stateName)
-                .First()
-                .Value;
-        }
-
-        public void SetItemState(ItemsMoveable item, ItemState stateName, int value)
-        {
-            var nvp = _itemsMoveableStates[item]
-                .Where(p => p.ItemStateName == stateName)
-                .First();
-            nvp.Value = value;
-        }
-        
         public string StatesToJson()
         {
-            return JsonConvert.SerializeObject(_itemsMoveableStates);
+            return JsonConvert.SerializeObject(ItemsMoveableStates);
         }
 
         public void StatesFromJson(string json)
         {
-            _itemsMoveableStates = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable, List<ItemStateValuePair>>>(json);
+            ItemsMoveableStates = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable, List<ItemStateValuePair>>>(json);
         }
 
         #endregion
@@ -152,86 +100,16 @@ namespace ColossalCave.Engine
         #region Item location management
 
         // Locations of moveable items 
-        private Dictionary<ItemsMoveable, int> _itemLocations;
-
-        public bool IsItemInInventory(ItemsMoveable item)
-        {
-            return IsItemAtLocation(item, 0);
-        }
-
-        public bool IsItemAtCurrentLocation(ItemsMoveable item)
-        {
-            return IsItemAtLocation(item, CurrentLocation.Id) || IsItemInInventory(item);
-        }
-
-        public List<Item> GetItemsAtCurrentLocation()
-        {
-            var result = new List<Item>();
-            var itemMoveables = _itemLocations
-                .Where(il => il.Value == CurrentLocation.Id)
-                .Select(il => il.Key)
-                .ToList();
-            if (itemMoveables.Count > 0)
-            {
-                foreach (var im in itemMoveables)
-                    result.Add(_itemProvider.GetItem(im));
-            }
-            return result;
-        }
-
-        public bool IsItemAtLocation(ItemsMoveable item, int locationId)
-        {
-            if ((_itemLocations[item] == locationId) ||
-                (CurrentLocation.Id == locationId && IsItemInInventory(item)))
-                return true;
-            return false;
-        }
-
-        public bool IsInventoryEmpty
-        {
-            get { return _itemLocations.Where(il => il.Value == 0).Count() == 0; }
-        }
-
-        public bool IsInventoryFull
-        {
-            get { return _itemLocations.Where(il => il.Value == 0).Count() >= MaxInventory; }
-        }
-
-        public void AddToInventory(ItemsMoveable item)
-        {
-            _itemLocations[item] = 0;
-        }
-
-        public void RemoveFromInventory(ItemsMoveable item)
-        {
-            MoveItemToLocation(item, CurrentLocation.Id);
-        }
-
-        public void MoveItemToLocation(ItemsMoveable item, int locationId)
-        {
-            _itemLocations[item] = locationId;
-        }
+        public Dictionary<ItemsMoveable, int> ItemLocations;
 
         public string ItemLocationsToJson()
         {
-            return JsonConvert.SerializeObject(_itemLocations);
+            return JsonConvert.SerializeObject(ItemLocations);
         }
 
         public void ItemLocationsFromJson(string json)
         {
-            _itemLocations = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable,int>>(json);
-        }
-
-        #endregion
-
-        #region Parameter management
-
-        public string GetParameterValue(string name)
-        {
-            var value = Parameters.ContainsKey(name) ? Parameters[name] : null;
-            if (string.IsNullOrWhiteSpace(value))
-                return null;
-            return value;
+            ItemLocations = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable, int>>(json);
         }
 
         #endregion

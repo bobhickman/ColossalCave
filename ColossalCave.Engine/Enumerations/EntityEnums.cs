@@ -92,7 +92,8 @@
         Axe = 14,
         Knife = 15,
         Drawing = 16,
-        Shards = 17
+        Shards = 17,
+        All = 18
     }
 
     public enum ItemsFixed

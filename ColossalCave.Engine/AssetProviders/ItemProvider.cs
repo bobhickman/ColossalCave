@@ -211,8 +211,8 @@ namespace ColossalCave.Engine.AssetProviders
                     Id = (int)ItemsMoveable.Bird,
                     ItemEnum = ItemsMoveable.Bird,
                     Name = ItemsMoveable.Bird.ToString(),
-                    ShortDescription = "",
-                    Description = "",
+                    ShortDescription = "A little bird",
+                    Description = "The bird is very small.",
                     InitialLocationId = (int)LocMnemonics.Bird,
                     DefaultStates = new List<ItemStateValuePair>
                     {

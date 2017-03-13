@@ -8,12 +8,13 @@ namespace ColossalCave.Engine.ActionHandlers
     public class MagicHandler : BaseHandler, IMagicHandler
     {
         public MagicHandler(ILogger<MagicHandler> log,
-            IResponseBuilder responseBuilder,
-            IMessageProvider messageProvider,
-            ILocationProvider locationProvider,
-            IMapHelper mapHelper,
-            AdventureContext context)
-            : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
+           IResponseBuilder responseBuilder,
+           IMessageProvider messageProvider,
+           ILocationProvider locationProvider,
+           IAdventureContextHelper advHelper,
+           IMapHelper mapHelper,
+           AdventureContext context)
+            : base(log, responseBuilder, messageProvider, locationProvider, advHelper, mapHelper)
         {
         }
 
@@ -21,16 +22,16 @@ namespace ColossalCave.Engine.ActionHandlers
         {
             _log.LogInformation("Handling Magic");
 
-            var theMap = _locationProvider.Map;
-            var curLoc = _advContext.CurrentLocation;
+            var curLoc = _advHelper.CurrentLocation;
             _log.LogInformation($"Current location: {curLoc}");
             var newLoc = curLoc;
 
-            var magicStr = _advContext.Parameters["magicwords"];
+            var magicStr = _advHelper.GetParameterValue("magicwords");
             if (Enum.TryParse(magicStr, true, out Magicwords magic))
             {
+                var theMap = _locationProvider.Map;
                 if (magic == Magicwords.XYZZY &&
-                    _advContext.Flags.HasFlag(AdventureContextFlags.KnowsXYZZY) &&
+                    _advHelper.HasFlag(AdventureContextFlags.KnowsXYZZY) &&
                     (curLoc.Mnemonic == LocMnemonics.House || curLoc.Mnemonic == LocMnemonics.Debris))
                 {
                     newLoc = curLoc.Mnemonic == LocMnemonics.House 
@@ -38,7 +39,7 @@ namespace ColossalCave.Engine.ActionHandlers
                         : theMap[(int)LocMnemonics.House];
                 }
                 else if (magic == Magicwords.Plugh &&
-                    _advContext.Flags.HasFlag(AdventureContextFlags.KnowsPlugh) &&
+                    _advHelper.HasFlag(AdventureContextFlags.KnowsPlugh) &&
                     (curLoc.Mnemonic == LocMnemonics.House || curLoc.Mnemonic == LocMnemonics.Y2))
                 {
                     newLoc = curLoc.Mnemonic == LocMnemonics.House
@@ -46,7 +47,7 @@ namespace ColossalCave.Engine.ActionHandlers
                         : theMap[(int)LocMnemonics.House];
                 }
                 else if (magic == Magicwords.Plover &&
-                    _advContext.Flags.HasFlag(AdventureContextFlags.KnowsPlover) &&
+                    _advHelper.HasFlag(AdventureContextFlags.KnowsPlover) &&
                     (curLoc.Mnemonic == LocMnemonics.Plover || curLoc.Mnemonic == LocMnemonics.Y2))
                 {
                     newLoc = curLoc.Mnemonic == LocMnemonics.Plover

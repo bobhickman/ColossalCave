@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -8,12 +9,13 @@ namespace ColossalCave.Engine.ActionHandlers
     public class InventoryHandler : BaseHandler, IInventoryHandler
     {
         public InventoryHandler(ILogger<InventoryHandler> log,
-            IResponseBuilder responseBuilder,
-            IMessageProvider messageProvider,
-            ILocationProvider locationProvider,
-            IMapHelper mapHelper,
-            AdventureContext context)
-            : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
+           IResponseBuilder responseBuilder,
+           IMessageProvider messageProvider,
+           ILocationProvider locationProvider,
+           IAdventureContextHelper advHelper,
+           IMapHelper mapHelper,
+           AdventureContext context)
+            : base(log, responseBuilder, messageProvider, locationProvider, advHelper, mapHelper)
         {
         }
 
@@ -21,45 +23,84 @@ namespace ColossalCave.Engine.ActionHandlers
         {
             _log.LogInformation("Handling AddToInventory");
 
-            var actionStr = _advContext.GetParameterValue("actions");
+            var actionStr = _advHelper.GetParameterValue("actions");
             if (Enum.TryParse<Actions>(actionStr, true, out var action))
             {
                 _log?.LogInformation($"Intent is {action}");
-                var itemStr = _advContext.GetParameterValue("items-moveable");
-                if (Enum.TryParse(itemStr, true, out ItemsMoveable item))
+                var itemStr = _advHelper.GetParameterValue("items-moveable");
+                if (Enum.TryParse(itemStr, true, out ItemsMoveable targetItem))
                 {
-                    _log?.LogInformation($"Target item is {item}");
+                    _log?.LogInformation($"Target item is {targetItem}");
                     if (action == Actions.Take)
                     {
-                        if (_advContext.IsItemInInventory(item))
+                        if (targetItem == ItemsMoveable.All)
+                        {
+                            var itemsHere = _advHelper.GetItemsAtCurrentLocation();
+                            if (itemsHere.Any())
+                            {
+                                foreach(var itemToPickup in itemsHere)
+                                {
+                                    if (_advHelper.IsInventoryFull)
+                                    {
+                                        _responseBuilder.AddToResponse(MsgMnemonic.InvFull);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        _advHelper.AddToInventory(itemToPickup.ItemEnum);
+                                        _responseBuilder.AddToResponse($"You pick up {itemToPickup.ShortDescription.ToLower()}. ", 1);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                _responseBuilder.AddToResponse("There's nothing here to take.");
+                            }
+                        }
+                        else if (_advHelper.IsItemInInventory(targetItem))
                         {
                             _responseBuilder.AddToResponse(MsgMnemonic.InvAlreadyCarrying);
                         }
-                        else
+                        else // try pick it up
                         {
-                            if (!_advContext.IsItemAtCurrentLocation(item))
+                            if (!_advHelper.IsItemAtCurrentLocation(targetItem))
                             {
                                 _responseBuilder.AddToResponse(MsgMnemonic.ItemNotHere);
                             }
-                            else if (_advContext.IsInventoryFull)
+                            else if (_advHelper.IsInventoryFull)
                             {
                                 _responseBuilder.AddToResponse(MsgMnemonic.InvFull);
                             }
                             else
                             {
-                                _advContext.AddToInventory(item);
+                                _advHelper.AddToInventory(targetItem);
                                 _responseBuilder.AddToResponse(MsgMnemonic.OK);
                             }
                         }
                     }
                     else if (action == Actions.Drop)
                     {
-                        if (_advContext.IsItemInInventory(item))
+                        if (targetItem == ItemsMoveable.All)
                         {
-                            _advContext.RemoveFromInventory(item);
+                            if (!_advHelper.IsInventoryEmpty)
+                            {
+                                foreach(var itemToDrop in _advHelper.GetInventory())
+                                {
+                                    _advHelper.RemoveFromInventory(itemToDrop.ItemEnum);
+                                    _responseBuilder.AddToResponse($"You drop {itemToDrop.ShortDescription.ToLower()}. ", 1);
+                                }
+                            }
+                            else
+                            {
+                                _responseBuilder.AddToResponse(MsgMnemonic.InvNotCarryingAnything);
+                            }
+                        }
+                        else if (_advHelper.IsItemInInventory(targetItem))
+                        {
+                            _advHelper.RemoveFromInventory(targetItem);
                             _responseBuilder.AddToResponse(MsgMnemonic.OK);
                         }
-                        else if (_advContext.IsInventoryEmpty)
+                        else if (_advHelper.IsInventoryEmpty)
                         {
                             _responseBuilder.AddToResponse(MsgMnemonic.InvNotCarryingAnything);
                         }

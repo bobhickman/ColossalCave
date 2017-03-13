@@ -17,7 +17,7 @@ namespace ColossalCave.Engine
             {
                 var speech = _speechBuffer.ToString();
                 if (speech.Contains("</") || speech.Contains("/>"))
-                    speech = "<speech>" + speech + "</speech";
+                    speech = "<speak>" + speech + "</speak>";
                 return speech;
             }
         }

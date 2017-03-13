@@ -10,12 +10,13 @@ namespace ColossalCave.Engine.ActionHandlers
     public class MoveLocationHandler : BaseHandler, IMoveLocationHandler
     {
         public MoveLocationHandler(ILogger<MoveLocationHandler> log,
-            IResponseBuilder responseBuilder,
-            IMessageProvider messageProvider,
-            ILocationProvider locationProvider,
-            IMapHelper mapHelper,
-            AdventureContext context)
-            : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
+           IResponseBuilder responseBuilder,
+           IMessageProvider messageProvider,
+           ILocationProvider locationProvider,
+           IAdventureContextHelper advHelper,
+           IMapHelper mapHelper,
+           AdventureContext context)
+            : base(log, responseBuilder, messageProvider, locationProvider, advHelper, mapHelper)
         {
         }
 
@@ -23,14 +24,14 @@ namespace ColossalCave.Engine.ActionHandlers
         {
             _log.LogInformation("Handling move-location");
 
-            var curLoc = _advContext.CurrentLocation;
+            var curLoc = _advHelper.CurrentLocation;
             _log.LogInformation($"Current location: {curLoc}");
             var newLoc = curLoc;
 
             // movements
-            var movementStr = _advContext.GetParameterValue("movements");
+            var movementStr = _advHelper.GetParameterValue("movements");
             // locations
-            var locationStr = _advContext.GetParameterValue("locations");
+            var locationStr = _advHelper.GetParameterValue("locations");
 
             if (locationStr != null)
             {

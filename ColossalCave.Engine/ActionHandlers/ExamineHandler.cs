@@ -8,12 +8,13 @@ namespace ColossalCave.Engine.ActionHandlers
     public class ExamineHandler : BaseHandler, IExamineHandler
     {
         public ExamineHandler(ILogger<ExamineHandler> log,
-            IResponseBuilder responseBuilder,
-            IMessageProvider messageProvider,
-            ILocationProvider locationProvider,
-            IMapHelper mapHelper,
-            AdventureContext context)
-            : base(log, responseBuilder, messageProvider, locationProvider, mapHelper, context)
+           IResponseBuilder responseBuilder,
+           IMessageProvider messageProvider,
+           ILocationProvider locationProvider,
+           IAdventureContextHelper advHelper,
+           IMapHelper mapHelper,
+           AdventureContext context)
+            : base(log, responseBuilder, messageProvider, locationProvider, advHelper, mapHelper)
         {
         }
 
@@ -22,18 +23,18 @@ namespace ColossalCave.Engine.ActionHandlers
             _log.LogInformation("Handling Examine");
 
             // Can't see in the dark.
-            if (!_advContext.IsCurrentLocationLight())
+            if (!_advHelper.IsCurrentLocationLight)
             {
                 _responseBuilder.PrefixResponse(MsgMnemonic.MovePitchDark, 1);
                 return;
             }
 
-            var examineStr = _advContext.Parameters["visuals"];
-            var itemMoveableStr = _advContext.Parameters["items-moveable"];
+            var examineStr = _advHelper.GetParameterValue("visuals");
+            var itemMoveableStr = _advHelper.GetParameterValue("items-moveable");
             if (Enum.TryParse(itemMoveableStr, true, out ItemsMoveable itemMoveable))
             {
                 // Item must be in the room or inventory
-                if (_advContext.IsItemAtCurrentLocation(itemMoveable))
+                if (_advHelper.IsItemAtCurrentLocation(itemMoveable))
                 {
                     _responseBuilder.AddToResponse("Examining...");
                 }
