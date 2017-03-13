@@ -81,6 +81,8 @@ namespace ColossalCave.Engine
         public void EnumerateItemsHere()
         {
             var itemsHere = _advContext.GetItemsAtCurrentLocation();
+            if (itemsHere.Count > 0)
+                _responseBuilder.AddToResponse("", 1);
             foreach (var item in itemsHere)
             {
                 var states = _advContext.GetItemStates(item.ItemEnum);

@@ -15,12 +15,16 @@ namespace ColossalCave.Engine.Enumerations
         House = 3,
         Valley = 4,
         Forest = 5,
-        //Forest = 6,
+        Forest2 = 6,
         Slit = 7,
         Depression = 8,
         Entrance = 9,
         Crawl = 10,
         Debris = 11,
-        Pipes = 79
+        Canyon = 12,
+        Bird = 13,
+        Y2 = 33,
+        Pipes = 79,
+        Plover = 100
     }
 }

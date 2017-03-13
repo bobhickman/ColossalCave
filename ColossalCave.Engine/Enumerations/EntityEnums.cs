@@ -33,7 +33,7 @@
         Dig
     }
 
-    public enum Commands
+    public enum ControlWords
     {
         Undefined = 0,
         Quit,

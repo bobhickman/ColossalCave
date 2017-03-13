@@ -31,21 +31,27 @@ namespace ColossalCave.Engine.ActionHandlers
             {
                 if (magic == Magicwords.XYZZY &&
                     _advContext.Flags.HasFlag(AdventureContextFlags.KnowsXYZZY) &&
-                    (curLoc.Id == 3 || curLoc.Id == 11))
+                    (curLoc.Mnemonic == LocMnemonics.House || curLoc.Mnemonic == LocMnemonics.Debris))
                 {
-                    newLoc = curLoc.Id == 3 ? theMap[11] : theMap[3];
+                    newLoc = curLoc.Mnemonic == LocMnemonics.House 
+                        ? theMap[(int)LocMnemonics.Debris] 
+                        : theMap[(int)LocMnemonics.House];
                 }
                 else if (magic == Magicwords.Plugh &&
                     _advContext.Flags.HasFlag(AdventureContextFlags.KnowsPlugh) &&
-                    (curLoc.Id == 3 || curLoc.Id == 33))
+                    (curLoc.Mnemonic == LocMnemonics.House || curLoc.Mnemonic == LocMnemonics.Y2))
                 {
-                    newLoc = curLoc.Id == 3 ? theMap[33] : theMap[3];
+                    newLoc = curLoc.Mnemonic == LocMnemonics.House
+                        ? theMap[(int)LocMnemonics.Y2]
+                        : theMap[(int)LocMnemonics.House];
                 }
                 else if (magic == Magicwords.Plover &&
                     _advContext.Flags.HasFlag(AdventureContextFlags.KnowsPlover) &&
-                    (curLoc.Id == 100 || curLoc.Id == 33))
+                    (curLoc.Mnemonic == LocMnemonics.Plover || curLoc.Mnemonic == LocMnemonics.Y2))
                 {
-                    newLoc = curLoc.Id == 100 ? theMap[33] : theMap[100];
+                    newLoc = curLoc.Mnemonic == LocMnemonics.Plover
+                        ? theMap[(int)LocMnemonics.Y2]
+                        : theMap[(int)LocMnemonics.Plover];
                 }
                 //else if (magic == Magicword.fee)
                 else

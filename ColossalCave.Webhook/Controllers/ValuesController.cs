@@ -22,7 +22,6 @@ namespace ColossalCave.Webhook.Controllers
         public IEnumerable<string> Get()
         {
             return _locationProvider.Map
-                .Take(10)
                 .Select(d => d.Value.ShortDescription)
                 .ToArray();
         }
