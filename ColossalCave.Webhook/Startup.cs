@@ -2,6 +2,7 @@
 using ColossalCave.Engine.ActionHandlers;
 using ColossalCave.Engine.AssetProviders;
 using ColossalCave.Engine.Interfaces;
+using ColossalCave.Engine.Utilities;
 using ColossalCave.Webhook.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,6 +67,9 @@ namespace ColossalCave.Webhook
             services.AddSingleton<IItemProvider, ItemProvider>();
             services.AddSingleton<ILocationProvider, LocationProvider>();
             services.AddSingleton<IMessageProvider, MessageProvider>();
+
+            // Add resource loader
+            services.AddSingleton<IResourceLoader, ResourceLoader>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

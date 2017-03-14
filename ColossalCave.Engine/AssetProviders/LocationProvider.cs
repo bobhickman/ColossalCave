@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.IO;
-using System.Text;
 using Newtonsoft.Json;
 using ColossalCave.Engine.AssetModels;
 using ColossalCave.Engine.Enumerations;
@@ -14,12 +12,15 @@ namespace ColossalCave.Engine.AssetProviders
     public class LocationProvider : ILocationProvider
     {
         private readonly ILogger _log;
+        private readonly IResourceLoader _resourceLoader;
 
         private Dictionary<int, Location> _locations;
 
-        public LocationProvider(ILogger<LocationProvider> log)
+        public LocationProvider(ILogger<LocationProvider> log,
+            IResourceLoader resourceLoader)
         {
             _log = log;
+            _resourceLoader = resourceLoader;
         }
 
         public Dictionary<int,Location> Map
@@ -109,14 +110,8 @@ namespace ColossalCave.Engine.AssetProviders
 
         private void LoadFromJsonFile()
         {
-            var assembly = typeof(LocationProvider).GetTypeInfo().Assembly;
-            string[] names = assembly.GetManifestResourceNames();
-            var stream = assembly.GetManifestResourceStream("ColossalCave.Engine.Assets.locations.json");
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
-            {
-                var json = reader.ReadToEnd();
-                _locations = JsonConvert.DeserializeObject<Dictionary<int, Location>>(json);
-            }
+            var json = _resourceLoader.LoadAsset("locations.json");
+            _locations = JsonConvert.DeserializeObject<Dictionary<int, Location>>(json);
         }
 
         private void LoadFromCode()

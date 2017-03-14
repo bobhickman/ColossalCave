@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using ColossalCave.Engine.AssetModels;
 using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
@@ -16,14 +14,17 @@ namespace ColossalCave.Engine.AssetProviders
     {
         private readonly ILogger _log;
         private readonly ILocationProvider _locationProvider;
+        private readonly IResourceLoader _resourceLoader;
 
         private List<Item> _items { get; set; }
 
         public ItemProvider(ILogger<ItemProvider> log,
-            ILocationProvider locationProvider)
+            ILocationProvider locationProvider,
+            IResourceLoader resourceLoader)
         {
             _log = log;
             _locationProvider = locationProvider;
+            _resourceLoader = resourceLoader;
         }
 
         public List<Item> Items
@@ -115,14 +116,8 @@ namespace ColossalCave.Engine.AssetProviders
 
         private void LoadFromJsonFile()
         {
-            var assembly = typeof(LocationProvider).GetTypeInfo().Assembly;
-            string[] names = assembly.GetManifestResourceNames();
-            var stream = assembly.GetManifestResourceStream("ColossalCave.Engine.Assets.items.json");
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
-            {
-                var json = reader.ReadToEnd();
-                _items = JsonConvert.DeserializeObject<List<Item>>(json);
-            }
+            var json = _resourceLoader.LoadAsset("items.json");
+            _items = JsonConvert.DeserializeObject<List<Item>>(json);
         }
 
         private void LoadFromCode()

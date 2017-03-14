@@ -1,17 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using ColossalCave.Engine.AssetModels;
 using ColossalCave.Engine.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace ColossalCave.Engine.AssetProviders
 {
     public class MessageProvider : IMessageProvider
     {
+        private readonly ILogger _log;
+        private readonly IResourceLoader _resourceLoader;
+
         private Dictionary<int, Message> _messages;
+
+        public MessageProvider(ILogger<MessageProvider> log,
+            IResourceLoader resourceLoader)
+        {
+            _log = log;
+            _resourceLoader = resourceLoader;
+        }
 
         public Message GetMessage(int id)
         {
@@ -22,15 +29,9 @@ namespace ColossalCave.Engine.AssetProviders
 
         private void LoadMessages()
         {
-            Trace.TraceInformation("Loading message assets...");
-            var assembly = typeof(MessageProvider).GetTypeInfo().Assembly;
-            string[] names = assembly.GetManifestResourceNames();
-            var stream = assembly.GetManifestResourceStream("ColossalCave.Engine.Assets.messages.json");
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
-            {
-                var json = reader.ReadToEnd();
-                _messages = JsonConvert.DeserializeObject<Dictionary<int,Message>>(json);
-            }
+            _log?.LogInformation("Loading message assets...");
+            var json = _resourceLoader.LoadAsset("messages.json");
+            _messages = JsonConvert.DeserializeObject<Dictionary<int, Message>>(json);
         }
     }
 }
