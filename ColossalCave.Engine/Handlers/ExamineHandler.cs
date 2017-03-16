@@ -3,7 +3,7 @@ using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace ColossalCave.Engine.ActionHandlers
+namespace ColossalCave.Engine.Handlers
 {
     public class ExamineHandler : BaseHandler, IExamineHandler
     {

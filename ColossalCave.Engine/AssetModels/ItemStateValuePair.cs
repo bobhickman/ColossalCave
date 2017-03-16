@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ColossalCave.Engine.Enumerations;
+﻿using ColossalCave.Engine.Enumerations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ColossalCave.Engine.AssetModels
 {
     public class ItemStateValuePair
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemState ItemStateName { get; set; }
+
         public int Value { get; set; }
 
         public ItemStateValuePair() { }

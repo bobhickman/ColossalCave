@@ -2,7 +2,7 @@
 using ColossalCave.Engine.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace ColossalCave.Engine.ActionHandlers
+namespace ColossalCave.Engine.Handlers
 {
     public class Dispatcher : IActionHandler
     {

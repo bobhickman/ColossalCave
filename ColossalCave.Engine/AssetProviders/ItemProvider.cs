@@ -147,7 +147,7 @@ namespace ColossalCave.Engine.AssetProviders
                     InitialLocationId = (int)LocMnemonics.House,
                     DefaultStates = new List<ItemStateValuePair>
                     {
-                        new ItemStateValuePair(ItemState.LanternIsOn, 1)
+                        new ItemStateValuePair(ItemState.LanternIsOn, 0)
                     },
                     FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
                     {

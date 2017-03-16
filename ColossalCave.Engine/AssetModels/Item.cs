@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ColossalCave.Engine.Enumerations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ColossalCave.Engine.AssetModels
 {
@@ -15,6 +16,7 @@ namespace ColossalCave.Engine.AssetModels
         /// <summary>
         /// The item enum
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemsMoveable ItemEnum { get; set; }
 
         /// <summary>
@@ -31,12 +33,14 @@ namespace ColossalCave.Engine.AssetModels
         /// <summary>
         /// Stateful descriptions of the item when found in a room
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<Tuple<ItemStateValuePair, string>> FoundDescriptions { get; set; }
 
         /// <summary>
         /// Stateful descriptions of the item when examined.
         /// If the item has no states the base Description is used and this property will be null.
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<Tuple<ItemStateValuePair, string>> ExamineDescriptions { get; set; }
     }
 }

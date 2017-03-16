@@ -1,6 +1,6 @@
 [
   {
-    "ItemEnum": 1,
+    "ItemEnum": "Keys",
     "InitialLocationId": 3,
     "FoundDescriptions": [
       {
@@ -8,32 +8,31 @@
         "Item2": "There are some keys on the ground here."
       }
     ],
-    "ExamineDescriptions": null,
     "Id": 1,
     "Name": "Keys",
     "ShortDescription": "A set of keys",
     "Description": "It's a large metal ring with a bunch of keys on it."
   },
   {
-    "ItemEnum": 2,
+    "ItemEnum": "Lantern",
     "InitialLocationId": 3,
     "DefaultStates": [
       {
-        "ItemStateName": 1,
-        "Value": 1
+        "ItemStateName": "LanternIsOn",
+        "Value": 0
       }
     ],
     "FoundDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 1,
+          "ItemStateName": "LanternIsOn",
           "Value": 0
         },
         "Item2": "There is a shiny brass lamp nearby."
       },
       {
         "Item1": {
-          "ItemStateName": 1,
+          "ItemStateName": "LanternIsOn",
           "Value": 1
         },
         "Item2": "There is a lamp shining nearby."
@@ -42,14 +41,14 @@
     "ExamineDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 1,
+          "ItemStateName": "LanternIsOn",
           "Value": 0
         },
         "Item2": "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off', which is currently in the 'Off' position."
       },
       {
         "Item1": {
-          "ItemStateName": 1,
+          "ItemStateName": "LanternIsOn",
           "Value": 1
         },
         "Item2": "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off', which is currently in the 'On' position."
@@ -61,7 +60,7 @@
     "Description": "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off'."
   },
   {
-    "ItemEnum": 3,
+    "ItemEnum": "Cage",
     "InitialLocationId": 10,
     "FoundDescriptions": [
       {
@@ -72,14 +71,14 @@
     "ExamineDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 3,
+          "ItemStateName": "BirdInCage",
           "Value": 0
         },
         "Item2": "It's a small, empty wicker cage."
       },
       {
         "Item1": {
-          "ItemStateName": 3,
+          "ItemStateName": "BirdInCage",
           "Value": 1
         },
         "Item2": "It's a small wicker cage with a little bird inside."
@@ -91,25 +90,25 @@
     "Description": "The cage appears to be hand-woven wicker. It has a small door on the side."
   },
   {
-    "ItemEnum": 4,
+    "ItemEnum": "Rod",
     "InitialLocationId": 11,
     "DefaultStates": [
       {
-        "ItemStateName": 2,
+        "ItemStateName": "RodIsMarked",
         "Value": 0
       }
     ],
     "FoundDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 2,
+          "ItemStateName": "RodIsMarked",
           "Value": 0
         },
         "Item2": "A three foot black rod with a rusty star on an end lies nearby."
       },
       {
         "Item1": {
-          "ItemStateName": 2,
+          "ItemStateName": "RodIsMarked",
           "Value": 1
         },
         "Item2": "A three foot black rod with a rusty mark on an end lies nearby."
@@ -118,14 +117,14 @@
     "ExamineDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 2,
+          "ItemStateName": "RodIsMarked",
           "Value": 0
         },
         "Item2": "The rod is about three feet long and black. It has a rusty star attached at one end."
       },
       {
         "Item1": {
-          "ItemStateName": 2,
+          "ItemStateName": "RodIsMarked",
           "Value": 1
         },
         "Item2": "The rod is about three feet long and black. It has a rusty mark on one end."
@@ -137,25 +136,25 @@
     "Description": "The rod is about three feet long and black."
   },
   {
-    "ItemEnum": 5,
+    "ItemEnum": "Bird",
     "InitialLocationId": 13,
     "DefaultStates": [
       {
-        "ItemStateName": 3,
+        "ItemStateName": "BirdInCage",
         "Value": 0
       }
     ],
     "FoundDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 3,
+          "ItemStateName": "BirdInCage",
           "Value": 0
         },
         "Item2": "A cheerful little bird is sitting here singing."
       },
       {
         "Item1": {
-          "ItemStateName": 3,
+          "ItemStateName": "BirdInCage",
           "Value": 1
         },
         "Item2": "There is a little bird in the cage."
@@ -164,14 +163,14 @@
     "ExamineDescriptions": [
       {
         "Item1": {
-          "ItemStateName": 3,
+          "ItemStateName": "BirdInCage",
           "Value": 0
         },
         "Item2": "It's a cheerful little singing bird."
       },
       {
         "Item1": {
-          "ItemStateName": 3,
+          "ItemStateName": "BirdInCage",
           "Value": 1
         },
         "Item2": "It's a little bird in a cage."
@@ -183,7 +182,7 @@
     "Description": "The bird is very small."
   },
   {
-    "ItemEnum": 8,
+    "ItemEnum": "Food",
     "InitialLocationId": 3,
     "FoundDescriptions": [
       {
@@ -191,7 +190,6 @@
         "Item2": "There is food here."
       }
     ],
-    "ExamineDescriptions": null,
     "Id": 8,
     "Name": "Food",
     "ShortDescription": "Some tasty food",

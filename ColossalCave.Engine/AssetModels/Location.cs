@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ColossalCave.Engine.Enumerations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ColossalCave.Engine.AssetModels
 {
@@ -13,6 +14,7 @@ namespace ColossalCave.Engine.AssetModels
         /// Mnemonic for this location
         /// </summary>
         [JsonProperty(DefaultValueHandling =DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(StringEnumConverter))]
         public LocMnemonics Mnemonic { get; set; }
 
         /// <summary>

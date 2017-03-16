@@ -1,7 +1,7 @@
 ﻿using ColossalCave.Engine.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace ColossalCave.Engine.ActionHandlers
+namespace ColossalCave.Engine.Handlers
 {
     public abstract class BaseHandler : IActionHandler
     {

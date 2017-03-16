@@ -5,7 +5,7 @@ using ColossalCave.Engine.Interfaces;
 using ColossalCave.Engine.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace ColossalCave.Engine.ActionHandlers
+namespace ColossalCave.Engine.Handlers
 {
     public class MoveLocationHandler : BaseHandler, IMoveLocationHandler
     {

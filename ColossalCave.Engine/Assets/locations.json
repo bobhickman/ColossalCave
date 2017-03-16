@@ -1,6 +1,6 @@
 ﻿{
   "1": {
-    "Mnemonic": 1,
+    "Mnemonic": "Road",
     "Exits": {
       "North": { "Id": 5 },
       "South": { "Id": 4 },
@@ -24,7 +24,7 @@
     "Description": "You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully."
   },
   "2": {
-    "Mnemonic": 2,
+    "Mnemonic": "Hill",
     "Exits": {
       "North": { "Id": 1 },
       "South": { "Id": 5 },
@@ -42,7 +42,7 @@
     "Description": "You have walked up a hill, still in the forest. The road slopes back down the other side of the hill. There is a building in the distance."
   },
   "3": {
-    "Mnemonic": 3,
+    "Mnemonic": "House",
     "Exits": {
       "West": { "Id": 1 },
       "Out": { "Id": 1 },
@@ -56,7 +56,7 @@
     "Description": "You are inside a building, a well house for a large spring."
   },
   "4": {
-    "Mnemonic": 4,
+    "Mnemonic": "Valley",
     "Exits": {
       "Up": { "Id": 1 },
       "North": { "Id": 1 },
@@ -77,7 +77,7 @@
     "Description": "You are in a valley in the forest beside a stream tumbling along a rocky bed."
   },
   "5": {
-    "Mnemonic": 5,
+    "Mnemonic": "Forest",
     "Exits": {
       "East": { "Id": 4 },
       "Down": { "Id": 4 },
@@ -109,7 +109,7 @@
     "Description": "You are in open forest, with a deep valley to one side."
   },
   "6": {
-    "Mnemonic": 6,
+    "Mnemonic": "Forest2",
     "Exits": {
       "North": { "Id": 1 },
       "East": { "Id": 4 },
@@ -129,7 +129,7 @@
     "Description": "You are in open forest near both a valley and a road."
   },
   "7": {
-    "Mnemonic": 7,
+    "Mnemonic": "Slit",
     "Exits": {
       "North": { "Id": 4 },
       "East": { "Id": 5 },
@@ -150,7 +150,7 @@
     "Description": "At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock."
   },
   "8": {
-    "Mnemonic": 8,
+    "Mnemonic": "Depression",
     "Exits": {
       "North": { "Id": 7 },
       "East": { "Id": 5 },
@@ -172,7 +172,7 @@
     "Description": "You are in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression."
   },
   "9": {
-    "Mnemonic": 9,
+    "Mnemonic": "Entrance",
     "Exits": {
       "Up": { "Id": 8 },
       "Out": { "Id": 8 },
@@ -191,7 +191,7 @@
     "Description": "You are in a small chamber beneath a 3 by 3 steel grate to the surface. A low crawl over cobbles leads inward to the west."
   },
   "10": {
-    "Mnemonic": 10,
+    "Mnemonic": "Crawl",
     "Exits": {
       "East": { "Id": 9 },
       "Out": { "Id": 9 },
@@ -210,7 +210,7 @@
     "Description": "You are crawling over cobbles in a low passage. There is a dim light at the east end of the passage."
   },
   "11": {
-    "Mnemonic": 11,
+    "Mnemonic": "Debris",
     "Exits": {
       "East": { "Id": 10 },
       "West": { "Id": 12 },
@@ -230,7 +230,7 @@
     "Description": "\r\nYou are in a debris room filled with stuff washed in from the surface. \r\nA low wide passage with cobbles becomes plugged with mud and debris here, but an awkward canyon leads upward and west. \r\n<break time='1s'/>\r\nA note on the wall says 'Magic word <say-as interpret-as='characters'>XYZZY</say-as>'."
   },
   "12": {
-    "Mnemonic": 12,
+    "Mnemonic": "Canyon",
     "Exits": {
       "East": { "Id": 11 },
       "Down": { "Id": 11 },
@@ -249,7 +249,7 @@
     "Description": "You are in an awkward sloping east/west canyon."
   },
   "13": {
-    "Mnemonic": 13,
+    "Mnemonic": "Bird",
     "Exits": {
       "East": { "Id": 12 },
       "West": { "Id": 14 }
@@ -267,7 +267,7 @@
     "Description": "You are in a splendid chamber thirty feet high. The walls are frozen rivers of orange stone. An awkward canyon and a good passage exit from east and west sides of the chamber."
   },
   "79": {
-    "Mnemonic": 79,
+    "Mnemonic": "Pipes",
     "IsLight": true,
     "Id": 79,
     "Name": "stream",
