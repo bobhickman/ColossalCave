@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ColossalCave.Engine;
 using ColossalCave.Engine.AssetProviders;
-using ColossalCave.Engine;
 using ColossalCave.Engine.Enumerations;
 using ColossalCave.Engine.Utilities;
+using System;
 
 namespace ColossalCave.ConsoleRunner
 {
@@ -35,8 +35,16 @@ namespace ColossalCave.ConsoleRunner
             foreach (var item in ip.Items)
             {
                 Console.WriteLine($"\n{item}");
-                foreach (var desc in item.FoundDescriptions)
-                    Console.WriteLine($"{desc.Item1} - {desc.Item2}");
+                if (item.FoundDescriptions != null)
+                {
+                    foreach (var desc in item.FoundDescriptions)
+                        Console.WriteLine($"{desc.Item1} - {desc.Item2}");
+                }
+                else if (item.ExamineDescriptions != null)
+                {
+                    foreach (var desc in item.ExamineDescriptions)
+                        Console.WriteLine($"{desc.Item1} - {desc.Item2}");
+                }
             }
 
             var context = new AdventureContext(ip, lp);

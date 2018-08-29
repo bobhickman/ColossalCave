@@ -194,5 +194,35 @@
     "Name": "Food",
     "ShortDescription": "Some tasty food",
     "Description": "It appears to be some sort of fruit and nut based nutritional bar."
+  },
+  {
+    "ItemEnum": "Grate",
+    "InitialLocationId": 8,
+    "LocationId2": 9,
+    "ExamineDescriptions": [
+      {
+        "Item1": {
+          "ItemStateName": "GrateStatus",
+          "Value": 0
+        },
+        "Item2": "The grate is closed and locked."
+      },
+      {
+        "Item1": {
+          "ItemStateName": "GrateStatus",
+          "Value": 1
+        },
+        "Item2": "The grate is closed."
+      },
+      {
+        "Item1": {
+          "ItemStateName": "GrateStatus",
+          "Value": 2
+        },
+        "Item2": "The grate is open."
+      }
+    ],
+    "Id": 1000,
+    "Name": "Grate"
   }
 ]

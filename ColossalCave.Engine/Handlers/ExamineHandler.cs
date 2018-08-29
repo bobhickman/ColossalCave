@@ -30,20 +30,29 @@ namespace ColossalCave.Engine.Handlers
             }
 
             var examineStr = _advHelper.GetParameterValue("visuals");
-            var itemMoveableStr = _advHelper.GetParameterValue("items-moveable");
-            if (Enum.TryParse(itemMoveableStr, true, out ItemsMoveable itemMoveable))
+            var itemStr = _advHelper.GetParameterValue("items-moveable");
+            if (itemStr == null)
+                itemStr = _advHelper.GetParameterValue("treasures");
+            if (itemStr == null)
+                itemStr = _advHelper.GetParameterValue("items-fixed");
+            if (itemStr == null)
+                itemStr = _advHelper.GetParameterValue("mobs");
+            if (Enum.TryParse(itemStr, true, out Items item))
             {
                 // Item must be in the room or inventory
-                if (_advHelper.IsItemAtCurrentLocation(itemMoveable))
+                if (_advHelper.IsItemAtCurrentLocation(item))
                 {
-                    _responseBuilder.AddToResponse("Examining...");
+                    var desc = _advHelper.GetItemExamination(item);
+                    if (!string.IsNullOrEmpty(desc))
+                        _responseBuilder.AddToResponse(desc);
+                    else
+                        _responseBuilder.AddToResponse("It's unremarkable.");
                 }
                 else
                 {
                     _responseBuilder.AddToResponse(MsgMnemonic.ItemNotHere);
                 }
             }
-            // TODO: ItemsFixed, Treasures, Mobs
             else
             {
                 _responseBuilder.PrefixResponse(MsgMnemonic.VocabDontUnderstand, 1);

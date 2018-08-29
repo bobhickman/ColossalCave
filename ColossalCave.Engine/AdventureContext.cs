@@ -31,18 +31,18 @@ namespace ColossalCave.Engine
             // Initialize everything as if game is new
             SetCurrentLocation(1);
 
-            ItemLocations = new Dictionary<ItemsMoveable, int>();
+            MoveableItemLocations = new Dictionary<Items, int>();
             foreach(var itemLoc in _itemProvider.Items)
-                ItemLocations.Add(itemLoc.ItemEnum, itemLoc.InitialLocationId);
+                MoveableItemLocations.Add(itemLoc.ItemEnum, itemLoc.InitialLocationId);
 
-            ItemsMoveableStates = new Dictionary<ItemsMoveable, List<ItemStateValuePair>>();
+            ItemStates = new Dictionary<Items, List<ItemStateValuePair>>();
             foreach(var im in _itemProvider.Items)
             {
                 if (im.DefaultStates != null)
                 {
-                    ItemsMoveableStates[im.ItemEnum] = new List<ItemStateValuePair>();
+                    ItemStates[im.ItemEnum] = new List<ItemStateValuePair>();
                     foreach (var pair in im.DefaultStates)
-                        ItemsMoveableStates[im.ItemEnum].Add(pair);
+                        ItemStates[im.ItemEnum].Add(pair);
                 }
             }
         }
@@ -80,19 +80,19 @@ namespace ColossalCave.Engine
         #region Item state management
 
         // States of all items moveable and fixed, mobs and treasures
-        public Dictionary<ItemsMoveable, List<ItemStateValuePair>> ItemsMoveableStates;
+        public Dictionary<Items, List<ItemStateValuePair>> ItemStates;
         //private Dictionary<ItemsFixed, List<NameValuePair>> _itemsFixedStates;
         //private Dictionary<Mobs, List<NameValuePair>> _mobsStates;
         //private Dictionary<Treasures, List<NameValuePair>> _treasuresStates;
 
         public string StatesToJson()
         {
-            return JsonConvert.SerializeObject(ItemsMoveableStates);
+            return JsonConvert.SerializeObject(ItemStates);
         }
 
         public void StatesFromJson(string json)
         {
-            ItemsMoveableStates = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable, List<ItemStateValuePair>>>(json);
+            ItemStates = JsonConvert.DeserializeObject<Dictionary<Items, List<ItemStateValuePair>>>(json);
         }
 
         #endregion
@@ -100,16 +100,16 @@ namespace ColossalCave.Engine
         #region Item location management
 
         // Locations of moveable items 
-        public Dictionary<ItemsMoveable, int> ItemLocations;
+        public Dictionary<Items, int> MoveableItemLocations;
 
         public string ItemLocationsToJson()
         {
-            return JsonConvert.SerializeObject(ItemLocations);
+            return JsonConvert.SerializeObject(MoveableItemLocations);
         }
 
         public void ItemLocationsFromJson(string json)
         {
-            ItemLocations = JsonConvert.DeserializeObject<Dictionary<ItemsMoveable, int>>(json);
+            MoveableItemLocations = JsonConvert.DeserializeObject<Dictionary<Items, int>>(json);
         }
 
         #endregion

@@ -8,6 +8,8 @@ namespace ColossalCave.Engine.Interfaces
 {
     public interface IAdventureContextHelper
     {
+        #region Location management
+
         Location CurrentLocation { get; set; }
 
         bool IsCurrentLocationLight { get; }
@@ -16,36 +18,60 @@ namespace ColossalCave.Engine.Interfaces
 
         bool AdventurerHasALitLamp { get; }
 
-        List<ItemStateValuePair> GetItemStates(ItemsMoveable item);
+        #endregion
 
-        int GetItemState(ItemsMoveable item, ItemState stateName);
+        #region Item state management
 
-        void SetItemState(ItemsMoveable item, ItemState stateName, int value);
+        List<ItemStateValuePair> GetItemStates(Items item);
 
-        bool IsItemInInventory(ItemsMoveable item);
+        int GetItemState(Items item, ItemState stateName);
 
-        bool IsItemAtCurrentLocation(ItemsMoveable item);
+        void SetItemState(Items item, ItemState stateName, int value);
+
+        #endregion
+
+        #region Item location management
+
+        bool IsItemInInventory(Items item);
+
+        bool IsItemAtCurrentLocation(Items item);
 
         List<Item> GetItemsAtCurrentLocation();
 
         List<Item> GetInventory();
 
-        bool IsItemAtLocation(ItemsMoveable item, int locationId);
+        bool IsItemAtLocation(Items item, int locationId);
 
         bool IsInventoryEmpty { get; }
 
         bool IsInventoryFull { get; }
 
-        void AddToInventory(ItemsMoveable item);
+        void AddToInventory(Items item);
 
-        void RemoveFromInventory(ItemsMoveable item);
+        void RemoveFromInventory(Items item);
 
-        void MoveItemToLocation(ItemsMoveable item, int locationId);
+        void MoveItemToLocation(Items item, int locationId);
+
+        #endregion
+
+        #region Item descriptions
+
+        string GetItemExamination(Items itemEnum);
+
+        #endregion
+
+        #region Parameter management 
 
         string GetParameterValue(string name);
+        
+        #endregion
+
+        #region Flags
 
         bool HasFlag(AdventureContextFlags flag);
 
         void SetFlag(AdventureContextFlags flag);
+
+        #endregion
     }
 }

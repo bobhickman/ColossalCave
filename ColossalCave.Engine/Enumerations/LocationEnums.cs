@@ -25,6 +25,7 @@ namespace ColossalCave.Engine.Enumerations
         Bird = 13,
         Y2 = 33,
         Pipes = 79,
-        Plover = 100
+        Plover = 100,
+        Inventory = 9999
     }
 }

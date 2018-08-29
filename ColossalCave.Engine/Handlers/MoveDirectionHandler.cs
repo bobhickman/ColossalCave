@@ -41,10 +41,13 @@ namespace ColossalCave.Engine.Handlers
                     if (curLoc.Exits.ContainsKey(dir))
                     {
                         var exit = curLoc.Exits[dir];
-                        if (exit.GoesToRandom != null)
-                            newLoc = RandomizeExit(exit);
-                        else
-                            newLoc = exit.GoesTo;
+                        if (!BlockCheck(curLoc, exit))
+                        {
+                            if (exit.GoesToRandom != null)
+                                newLoc = RandomizeExit(exit);
+                            else
+                                newLoc = exit.GoesTo;
+                        }
                     }
                     else
                         _responseBuilder.PrefixResponse(MsgMnemonic.MoveCantGoThatWay, 1);
@@ -75,5 +78,29 @@ namespace ColossalCave.Engine.Handlers
             return exit.GoesToRandom.First().GoesTo;
         }
 
+        /// <summary>
+        /// Check for and handle blocked exits.
+        /// </summary>
+        private bool BlockCheck(Location curLoc, Exit exit)
+        {
+            if (exit.Blocker != Items.Undefined)
+            {
+                if (exit.Blocker == Items.Grate)
+                {
+                    var state = _advHelper.GetItemState(Items.Grate, ItemState.GrateStatus);
+                    if (state == 0) // closed, locked
+                    {
+                        _responseBuilder.AddToResponse(MsgMnemonic.GrateCantGoThrough);
+                        return true;
+                    }
+                    else if (state == 1) // closed, unlocked
+                    {
+                        _responseBuilder.AddToResponse(MsgMnemonic.GrateIsClosed);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

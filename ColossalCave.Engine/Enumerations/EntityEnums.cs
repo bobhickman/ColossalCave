@@ -30,7 +30,9 @@
         Read,
         Smash,
         Wake,
-        Dig
+        Dig,
+        Lock,
+        Unlock
     }
 
     public enum ControlWords
@@ -47,7 +49,9 @@
         Save,
         Information,
         Lost,
-        Swear
+        Swear,
+        Classic,
+        Modern
     }
 
     public enum Directions
@@ -73,9 +77,10 @@
         Under
     }
 
-    public enum ItemsMoveable
+    public enum Items
     {
         Undefined = 0,
+        // 1-999 Moveable/Carryable items
         Keys = 1,
         Lantern = 2,
         Cage = 3,
@@ -85,38 +90,71 @@
         Magazine = 7,
         Food = 8,
         Bottle = 9,
-        Mirror = 10,
-        Batteries = 11,
-        Water = 12,
-        Oil = 13,
-        Axe = 14,
-        Knife = 15,
-        Drawing = 16,
-        Shards = 17,
-        All = 18
+        Batteries = 10,
+        Water = 11,
+        Oil = 12,
+        Axe = 13,
+        Knife = 14,
+        Drawing = 15,
+        Shards = 16,
+        All = 17,
+        // 1000-1999 Fixed items
+        Grate = 1000,
+        Steps = 1001,
+        Door = 1002,
+        Fissure = 1003,
+        Tablet = 1004,
+        Clam = 1005,
+        Oyster = 1006,
+        Plant = 1007,
+        Stalactite = 1008,
+        Drawings = 1009,
+        Chasm = 1010,
+        Message = 1011,
+        Volcano = 1012,
+        Machine = 1013,
+        Carpet = 1014,
+        Mirror = 1015,
+        Figure = 1016,
+        // 2000-2999 Treasures
+        Nugget = 2000,
+        Diamonds = 2001,
+        Silver = 2002,
+        Jewelry = 2003,
+        Coins = 2004,
+        Chest = 2005,
+        Eggs = 2006,
+        Trident = 2007,
+        Vase = 2008,
+        Emerald = 2009,
+        Pyramid = 2010,
+        Pearl = 2011,
+        Rug = 2012,
+        Spices = 2013,
+        Chain = 2014
     }
 
-    public enum ItemsFixed
-    {
-        Undefined = 0,
-        Grate,
-        Steps,
-        Door,
-        Fissure,
-        Tablet,
-        Clam,
-        Oyster,
-        Plant,
-        Stalactite,
-        Drawings,
-        Chasm,
-        Message,
-        Volcano,
-        Machine,
-        Carpet,
-        Mirror,
-        Figure
-    }
+    //public enum ItemsFixed
+    //{
+    //    Undefined = 0,
+    //    Grate,
+    //    Steps,
+    //    Door,
+    //    Fissure,
+    //    Tablet,
+    //    Clam,
+    //    Oyster,
+    //    Plant,
+    //    Stalactite,
+    //    Drawings,
+    //    Chasm,
+    //    Message,
+    //    Volcano,
+    //    Machine,
+    //    Carpet,
+    //    Mirror,
+    //    Figure
+    //}
 
     public enum Magicwords
     {
@@ -160,25 +198,25 @@
         Approach
     }
 
-    public enum Treasures
-    {
-        Undefined = 0,
-        Nugget,
-        Diamonds,
-        Silver,
-        Jewelry,
-        Coins,
-        Chest,
-        Eggs,
-        Trident,
-        Vase,
-        Emerald,
-        Pyramid,
-        Pearl,
-        Rug,
-        Spices,
-        Chain
-    }
+    //public enum Treasures
+    //{
+    //    Undefined = 0,
+    //    Nugget,
+    //    Diamonds,
+    //    Silver,
+    //    Jewelry,
+    //    Coins,
+    //    Chest,
+    //    Eggs,
+    //    Trident,
+    //    Vase,
+    //    Emerald,
+    //    Pyramid,
+    //    Pearl,
+    //    Rug,
+    //    Spices,
+    //    Chain
+    //}
 
     public enum Visuals
     {

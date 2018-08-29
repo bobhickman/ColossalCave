@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ColossalCave.Engine.Enumerations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ColossalCave.Engine.AssetModels
 {
@@ -15,10 +17,11 @@ namespace ColossalCave.Engine.AssetModels
         public Location GoesTo { get; set; }
 
         /// <summary>
-        /// A list of items that are needed to go through the exit
+        /// An item which is initially blocking the exit
         /// </summary>
-        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        //public List<int> RequiredItems;
+        [JsonProperty(DefaultValueHandling =DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Items Blocker { get; set; }
 
         /// <summary>
         /// Sets up a random exit.
@@ -27,9 +30,10 @@ namespace ColossalCave.Engine.AssetModels
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<RandomExit> GoesToRandom { get; set; }
 
-        public Exit(int id)
+        public Exit(int id, Items blocker = Items.Undefined)
         {
             Id = id;
+            Blocker = blocker;
         }
 
         public Exit() { }

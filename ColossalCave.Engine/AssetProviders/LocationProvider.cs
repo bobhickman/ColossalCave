@@ -47,7 +47,7 @@ namespace ColossalCave.Engine.AssetProviders
         {
             _log?.LogInformation("Loading location assets...");
 
-#if true
+#if false
             LoadFromJsonFile();
 #else 
             LoadFromCode();
@@ -317,8 +317,8 @@ namespace ColossalCave.Engine.AssetProviders
                             { Directions.West, new Exit(5) },
                             { Directions.South, new Exit(5) },
                             { Directions.Up, new Exit(7) },
-                            { Directions.Down, new Exit(9) },
-                            { Directions.In, new Exit(9) },
+                            { Directions.Down, new Exit(9, Items.Grate) },
+                            { Directions.In, new Exit(9, Items.Grate) },
                         },
                         FastTravel = new List<Location>
                         {
@@ -339,8 +339,8 @@ namespace ColossalCave.Engine.AssetProviders
                         Description = "You are in a small chamber beneath a 3 by 3 steel grate to the surface. A low crawl over cobbles leads inward to the west.",
                         Exits = new Dictionary<Directions, Exit>
                         {
-                            { Directions.Up, new Exit(8) },
-                            { Directions.Out, new Exit(8) },
+                            { Directions.Up, new Exit(8, Items.Grate) },
+                            { Directions.Out, new Exit(8, Items.Grate) },
                             { Directions.West, new Exit(10) },
                             { Directions.In, new Exit(10) },
                         },

@@ -86,13 +86,15 @@ namespace ColossalCave.Engine
             foreach (var item in itemsHere)
             {
                 var states = _advHelper.GetItemStates(item.ItemEnum);
-                if (states == null)
+                if (states == null && item.FoundDescriptions != null)
                 {
                     _responseBuilder.AddToResponse(item.FoundDescriptions[0].Item2, 1);
                 }
                 else
                 {
-                    _responseBuilder.AddToResponse(_itemProvider.GetItemFoundDescription(item, states), 1);
+                    var description = _itemProvider.GetItemFoundDescription(item, states);
+                    if (description != null)
+                        _responseBuilder.AddToResponse(description, 1);
                 }
             }
         }

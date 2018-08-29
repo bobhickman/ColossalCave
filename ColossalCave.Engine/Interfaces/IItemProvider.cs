@@ -10,7 +10,7 @@ namespace ColossalCave.Engine.Interfaces
 
         Item GetItem(int id);
 
-        Item GetItem(ItemsMoveable item);
+        Item GetItem(Items item);
 
         string GetItemFoundDescription(Item item, List<ItemStateValuePair> states);
 

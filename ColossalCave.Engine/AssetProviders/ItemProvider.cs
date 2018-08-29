@@ -44,7 +44,7 @@ namespace ColossalCave.Engine.AssetProviders
             return _items.FirstOrDefault(i => i.Id == id);
         }
 
-        public Item GetItem(ItemsMoveable item)
+        public Item GetItem(Items item)
         {
             if (_items == null)
                 LoadItems();
@@ -55,7 +55,7 @@ namespace ColossalCave.Engine.AssetProviders
         {
             _log?.LogInformation("Loading item assets...");
 
-#if true
+#if false
             LoadFromJsonFile();
 #else 
             LoadFromCode();
@@ -64,15 +64,15 @@ namespace ColossalCave.Engine.AssetProviders
 
         public string GetItemFoundDescription(Item item, List<ItemStateValuePair> states)
         {
-            if (item.ItemEnum == ItemsMoveable.Lantern)
+            if (item.ItemEnum == Enumerations.Items.Lantern)
             {
                 return GetSingleFoundDescription(item, states, ItemState.LanternIsOn);
             }
-            else if (item.ItemEnum == ItemsMoveable.Bird)
+            else if (item.ItemEnum == Enumerations.Items.Bird)
             {
                 return GetSingleFoundDescription(item, states, ItemState.BirdInCage);
             }
-            else if (item.ItemEnum == ItemsMoveable.Rod)
+            else if (item.ItemEnum == Enumerations.Items.Rod)
             {
                 return GetSingleFoundDescription(item, states, ItemState.RodIsMarked);
             }
@@ -81,17 +81,21 @@ namespace ColossalCave.Engine.AssetProviders
 
         public string GetItemExamineDescription(Item item, List<ItemStateValuePair> states)
         {
-            if (item.ItemEnum == ItemsMoveable.Lantern)
+            if (item.ItemEnum == Enumerations.Items.Lantern)
             {
                 return GetSingleExamineDescription(item, states, ItemState.LanternIsOn);
             }
-            else if (item.ItemEnum == ItemsMoveable.Bird)
+            else if (item.ItemEnum == Enumerations.Items.Bird)
             {
                 return GetSingleExamineDescription(item, states, ItemState.BirdInCage);
             }
-            else if (item.ItemEnum == ItemsMoveable.Rod)
+            else if (item.ItemEnum == Enumerations.Items.Rod)
             {
                 return GetSingleExamineDescription(item, states, ItemState.RodIsMarked);
+            }
+            else if (item.ItemEnum == Enumerations.Items.Grate)
+            {
+                return GetSingleExamineDescription(item, states, ItemState.GrateStatus);
             }
             return item.Description;
         }
@@ -126,9 +130,9 @@ namespace ColossalCave.Engine.AssetProviders
             {
                 new Item // 1
                 {
-                    Id = (int)ItemsMoveable.Keys,
-                    ItemEnum = ItemsMoveable.Keys,
-                    Name = ItemsMoveable.Keys.ToString(),
+                    Id = (int)Enumerations.Items.Keys,
+                    ItemEnum = Enumerations.Items.Keys,
+                    Name = Enumerations.Items.Keys.ToString(),
                     ShortDescription = "A set of keys",
                     Description = "It's a large metal ring with a bunch of keys on it.",
                     InitialLocationId = (int)LocMnemonics.House, 
@@ -139,9 +143,9 @@ namespace ColossalCave.Engine.AssetProviders
                 },
                 new Item // 2
                 {
-                    Id = (int)ItemsMoveable.Lantern,
-                    ItemEnum = ItemsMoveable.Lantern,
-                    Name = ItemsMoveable.Lantern.ToString(),
+                    Id = (int)Enumerations.Items.Lantern,
+                    ItemEnum = Enumerations.Items.Lantern,
+                    Name = Enumerations.Items.Lantern.ToString(),
                     ShortDescription = "A shiny brass lantern",
                     Description = "The lamp is brass and highly polished. There is a switch on it labeled 'On/Off'.",
                     InitialLocationId = (int)LocMnemonics.House,
@@ -162,9 +166,9 @@ namespace ColossalCave.Engine.AssetProviders
                 },
                 new Item // 3
                 {
-                    Id = (int)ItemsMoveable.Cage,
-                    ItemEnum = ItemsMoveable.Cage,
-                    Name = ItemsMoveable.Cage.ToString(),
+                    Id = (int)Enumerations.Items.Cage,
+                    ItemEnum = Enumerations.Items.Cage,
+                    Name = Enumerations.Items.Cage.ToString(),
                     ShortDescription = "A small wicker cage",
                     Description = "The cage appears to be hand-woven wicker. It has a small door on the side.",
                     InitialLocationId = (int)LocMnemonics.Crawl,
@@ -180,9 +184,9 @@ namespace ColossalCave.Engine.AssetProviders
                 },
                 new Item // 4
                 {
-                    Id = (int)ItemsMoveable.Rod,
-                    ItemEnum = ItemsMoveable.Rod,
-                    Name = ItemsMoveable.Rod.ToString(),
+                    Id = (int)Enumerations.Items.Rod,
+                    ItemEnum = Enumerations.Items.Rod,
+                    Name = Enumerations.Items.Rod.ToString(),
                     ShortDescription = "A three foot black rod",
                     Description = "The rod is about three feet long and black.",
                     InitialLocationId = (int)LocMnemonics.Debris,
@@ -203,9 +207,9 @@ namespace ColossalCave.Engine.AssetProviders
                 },
                 new Item // 5
                 {
-                    Id = (int)ItemsMoveable.Bird,
-                    ItemEnum = ItemsMoveable.Bird,
-                    Name = ItemsMoveable.Bird.ToString(),
+                    Id = (int)Enumerations.Items.Bird,
+                    ItemEnum = Enumerations.Items.Bird,
+                    Name = Enumerations.Items.Bird.ToString(),
                     ShortDescription = "A little bird",
                     Description = "The bird is very small.",
                     InitialLocationId = (int)LocMnemonics.Bird,
@@ -226,15 +230,34 @@ namespace ColossalCave.Engine.AssetProviders
                 },
                 new Item // 8
                 {
-                    Id = (int)ItemsMoveable.Food,
-                    ItemEnum = ItemsMoveable.Food,
-                    Name = ItemsMoveable.Food.ToString(),
+                    Id = (int)Enumerations.Items.Food,
+                    ItemEnum = Enumerations.Items.Food,
+                    Name = Enumerations.Items.Food.ToString(),
                     ShortDescription = "Some tasty food",
                     Description = "It appears to be some sort of fruit and nut based nutritional bar.",
                     InitialLocationId = (int)LocMnemonics.House,
                     FoundDescriptions = new List<Tuple<ItemStateValuePair, string>>
                     {
                         new Tuple<ItemStateValuePair, string>(null, "There is food here."),
+                    }
+                },
+                new Item // 1000
+                {
+                    Id = (int)Enumerations.Items.Grate,
+                    ItemEnum = Enumerations.Items.Grate,
+                    Name = Enumerations.Items.Grate.ToString(),
+                    InitialLocationId = (int)LocMnemonics.Depression,
+                    LocationId2 = (int)LocMnemonics.Entrance,
+                    DefaultStates = new List<ItemStateValuePair>
+                    {
+                        new ItemStateValuePair(ItemState.IsFixed, 1),
+                        new ItemStateValuePair(ItemState.GrateStatus, 0) // closed and locked
+                    },
+                    ExamineDescriptions = new List<Tuple<ItemStateValuePair, string>>
+                    {
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.GrateStatus, 0), "The grate is closed and locked."),
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.GrateStatus, 1), "The grate is closed."),
+                        new Tuple<ItemStateValuePair, string>(new ItemStateValuePair(ItemState.GrateStatus, 2), "The grate is open.")
                     }
                 },
             };

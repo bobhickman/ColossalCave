@@ -42,36 +42,41 @@ namespace ColossalCave.Engine
         {
             if (location.IsLight == true)
                 return true;
-            else if (IsItemAtLocation(ItemsMoveable.Lantern, location.Id) &&
-                GetItemState(ItemsMoveable.Lantern, ItemState.LanternIsOn) == 1)
+            else if (IsItemAtLocation(Items.Lantern, location.Id) &&
+                GetItemState(Items.Lantern, ItemState.LanternIsOn) == 1)
                 return true;
             return false;
         }
 
         public bool AdventurerHasALitLamp =>
-            IsItemInInventory(ItemsMoveable.Lantern) &&
-                GetItemState(ItemsMoveable.Lantern, ItemState.LanternIsOn) == 1;
+            IsItemInInventory(Items.Lantern) &&
+                GetItemState(Items.Lantern, ItemState.LanternIsOn) == 1;
 
         #endregion
 
         #region Item state management
 
-        public List<ItemStateValuePair> GetItemStates(ItemsMoveable item)
+        public List<ItemStateValuePair> GetItemStates(Items item)
         {
-            return _context.ItemsMoveableStates.ContainsKey(item) ? _context.ItemsMoveableStates[item] : null;
+            return _context.ItemStates.ContainsKey(item) ? _context.ItemStates[item] : null;
         }
 
-        public int GetItemState(ItemsMoveable item, ItemState stateName)
+        public int GetItemState(Items item, ItemState stateName)
         {
-            return _context.ItemsMoveableStates[item]
-                .Where(p => p.ItemStateName == stateName)
-                .First()
-                .Value;
+            if (_context.ItemStates.TryGetValue(item, out var itemStates))
+            {
+                var state = itemStates
+                    .Where(p => p.ItemStateName == stateName)
+                    .FirstOrDefault();
+                if (state != null)
+                    return state.Value;
+            }
+            return -1;
         }
 
-        public void SetItemState(ItemsMoveable item, ItemState stateName, int value)
+        public void SetItemState(Items item, ItemState stateName, int value)
         {
-            var nvp = _context.ItemsMoveableStates[item]
+            var nvp = _context.ItemStates[item]
                 .Where(p => p.ItemStateName == stateName)
                 .First();
             nvp.Value = value;
@@ -81,12 +86,12 @@ namespace ColossalCave.Engine
 
         #region Item location management
 
-        public bool IsItemInInventory(ItemsMoveable item)
+        public bool IsItemInInventory(Items item)
         {
-            return IsItemAtLocation(item, 0);
+            return IsItemAtLocation(item, (int)LocMnemonics.Inventory);
         }
 
-        public bool IsItemAtCurrentLocation(ItemsMoveable item)
+        public bool IsItemAtCurrentLocation(Items item)
         {
             return IsItemAtLocation(item, _context.CurrentLocation.Id) || IsItemInInventory(item);
         }
@@ -94,7 +99,7 @@ namespace ColossalCave.Engine
         public List<Item> GetItemsAtCurrentLocation()
         {
             var result = new List<Item>();
-            var itemMoveables = _context.ItemLocations
+            var itemMoveables = _context.MoveableItemLocations
                 .Where(il => il.Value == _context.CurrentLocation.Id)
                 .Select(il => il.Key)
                 .ToList();
@@ -109,8 +114,8 @@ namespace ColossalCave.Engine
         public List<Item> GetInventory()
         {
             var result = new List<Item>();
-            var itemMoveables = _context.ItemLocations
-                .Where(il => il.Value == 0)
+            var itemMoveables = _context.MoveableItemLocations
+                .Where(il => il.Value == (int)LocMnemonics.Inventory)
                 .Select(il => il.Key)
                 .ToList();
             if (itemMoveables.Count > 0)
@@ -121,33 +126,61 @@ namespace ColossalCave.Engine
             return result;
         }
 
-        public bool IsItemAtLocation(ItemsMoveable item, int locationId)
+        public bool IsItemAtLocation(Items item, int locationId)
         {
-            if ((_context.ItemLocations[item] == locationId) ||
-                (_context.CurrentLocation.Id == locationId && IsItemInInventory(item)))
+            // Is it a moveable item which is at the current location?
+            if (_context.MoveableItemLocations.TryGetValue(item, out var location))
+            {
+                if (location == locationId)
+                    return true;
+            }
+
+            // Is the adventurer at the location and holding the item?
+            if (_context.CurrentLocation.Id == locationId && IsItemInInventory(item))
                 return true;
+
+            // Is the item a fixed-location item and at the current location?
+            var fixedItem = _itemProvider.GetItem(item);
+            if (fixedItem.InitialLocationId == locationId ||
+                fixedItem.LocationId2 == locationId)
+                return true;
+
             return false;
         }
 
         public bool IsInventoryEmpty =>
-            _context.ItemLocations.Where(il => il.Value == 0).Count() == 0; 
+            _context.MoveableItemLocations
+                .Where(il => il.Value == (int)LocMnemonics.Inventory)
+                .Count() == 0; 
 
         public bool IsInventoryFull =>
-            _context.ItemLocations.Where(il => il.Value == 0).Count() >= AdventureContext.MaxInventory; 
+            _context.MoveableItemLocations
+                .Where(il => il.Value == (int)LocMnemonics.Inventory)
+                .Count() >= AdventureContext.MaxInventory; 
 
-        public void AddToInventory(ItemsMoveable item)
+        public void AddToInventory(Items item)
         {
-            _context.ItemLocations[item] = 0;
+            _context.MoveableItemLocations[item] = (int)LocMnemonics.Inventory;
         }
 
-        public void RemoveFromInventory(ItemsMoveable item)
+        public void RemoveFromInventory(Items item)
         {
             MoveItemToLocation(item, _context.CurrentLocation.Id);
         }
 
-        public void MoveItemToLocation(ItemsMoveable item, int locationId)
+        public void MoveItemToLocation(Items item, int locationId)
         {
-            _context.ItemLocations[item] = locationId;
+            _context.MoveableItemLocations[item] = locationId;
+        }
+
+        #endregion
+
+        #region Item descriptions
+
+        public string GetItemExamination(Items itemEnum)
+        {
+            var item = _itemProvider.GetItem(itemEnum);
+            return _itemProvider.GetItemExamineDescription(item, GetItemStates(itemEnum));
         }
 
         #endregion

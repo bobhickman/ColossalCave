@@ -12,10 +12,12 @@ namespace ColossalCave.Engine.Handlers
         private readonly IExamineHandler _examineHandler;
         private readonly IInventoryHandler _inventoryHandler;
         private readonly ILookAroundHandler _lookHandler;
+        private readonly ILockHandler _lockHandler;
         private readonly IMagicHandler _magicHandler;
         private readonly IMoveDirectionHandler _moveDirHandler;
         private readonly IMoveFeatureHandler _moveFeatureHandler;
         private readonly IMoveLocationHandler _moveLocHandler;
+        private readonly IOnOffHandler _onOffHandler;
 
         private readonly IResponseBuilder _responseBuilder;
 
@@ -25,11 +27,13 @@ namespace ColossalCave.Engine.Handlers
             IControlHandler controlHandler,
             IExamineHandler examineHandler,
             IInventoryHandler inventoryHandler,
+            ILockHandler lockHandler,
             ILookAroundHandler lookHandler,
             IMagicHandler magicHandler,
             IMoveDirectionHandler moveDirHandler,
             IMoveFeatureHandler moveFeatureHandler,
             IMoveLocationHandler moveLocHandler,
+            IOnOffHandler onOffHandler,
             IResponseBuilder responseBuilder,
             AdventureContext context)
         {
@@ -37,11 +41,13 @@ namespace ColossalCave.Engine.Handlers
             _controlHandler = controlHandler;
             _examineHandler = examineHandler;
             _inventoryHandler = inventoryHandler;
+            _lockHandler = lockHandler;
             _lookHandler = lookHandler;
             _magicHandler = magicHandler;
             _moveDirHandler = moveDirHandler;
             _moveFeatureHandler = moveFeatureHandler;
             _moveLocHandler = moveLocHandler;
+            _onOffHandler = onOffHandler;
             _responseBuilder = responseBuilder;
             _advContext = context;
         }
@@ -54,6 +60,8 @@ namespace ColossalCave.Engine.Handlers
                 _inventoryHandler.Handle();
             else if (_advContext.IntentName == "examination")
                 _examineHandler.Handle();
+            else if (_advContext.IntentName == "lock-unlock")
+                _lockHandler.Handle();
             else if (_advContext.IntentName == "lookaround")
                 _lookHandler.Handle();
             else if (_advContext.IntentName == "magic")
@@ -64,6 +72,8 @@ namespace ColossalCave.Engine.Handlers
                 _moveLocHandler.Handle();
             else if (_advContext.IntentName.EqualsNoCase("move-feature"))
                 _moveFeatureHandler.Handle();
+            else if (_advContext.IntentName.EqualsNoCase("on-off"))
+                _onOffHandler.Handle();
 
             _advContext.SpeechResponse = _responseBuilder.Speech;
             _advContext.TextResponse = _responseBuilder.Text;

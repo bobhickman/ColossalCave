@@ -23,17 +23,23 @@ namespace ColossalCave.Engine.Handlers
         {
             _log.LogInformation("Handling AddToInventory");
 
-            var actionStr = _advHelper.GetParameterValue("actions");
+            var actionStr = _advHelper.GetParameterValue("actions-inventory");
             if (Enum.TryParse<Actions>(actionStr, true, out var action))
             {
                 _log?.LogInformation($"Intent is {action}");
                 var itemStr = _advHelper.GetParameterValue("items-moveable");
-                if (Enum.TryParse(itemStr, true, out ItemsMoveable targetItem))
+                if (itemStr == null)
+                    itemStr = _advHelper.GetParameterValue("treasures");
+                if (itemStr == null)
+                    itemStr = _advHelper.GetParameterValue("items-fixed");
+                if (itemStr == null)
+                    itemStr = _advHelper.GetParameterValue("mobs");
+                if (Enum.TryParse(itemStr, true, out Items targetItem))
                 {
                     _log?.LogInformation($"Target item is {targetItem}");
                     if (action == Actions.Take)
                     {
-                        if (targetItem == ItemsMoveable.All)
+                        if (targetItem == Items.All)
                         {
                             var itemsHere = _advHelper.GetItemsAtCurrentLocation();
                             if (itemsHere.Any())
@@ -44,6 +50,11 @@ namespace ColossalCave.Engine.Handlers
                                     {
                                         _responseBuilder.AddToResponse(MsgMnemonic.InvFull);
                                         break;
+                                    }
+                                    else if (_advHelper.GetItemState(itemToPickup.ItemEnum, ItemState.IsFixed) == 1)
+                                    {
+                                        // ignore
+                                        //_responseBuilder.AddToResponse($"You can't pick up the {itemToPickup.Name}");
                                     }
                                     else
                                     {
@@ -56,6 +67,10 @@ namespace ColossalCave.Engine.Handlers
                             {
                                 _responseBuilder.AddToResponse("There's nothing here to take.");
                             }
+                        }
+                        else if (_advHelper.GetItemState(targetItem, ItemState.IsFixed) == 1)
+                        {
+                            _responseBuilder.AddToResponse($"You can't pick up the {targetItem}.");
                         }
                         else if (_advHelper.IsItemInInventory(targetItem))
                         {
@@ -80,7 +95,7 @@ namespace ColossalCave.Engine.Handlers
                     }
                     else if (action == Actions.Drop)
                     {
-                        if (targetItem == ItemsMoveable.All)
+                        if (targetItem == Items.All)
                         {
                             if (!_advHelper.IsInventoryEmpty)
                             {
@@ -112,7 +127,7 @@ namespace ColossalCave.Engine.Handlers
                 }
                 else
                 {
-                    _log.LogError($"Unknown inventory item: {itemStr}");
+                    _log.LogError($"Unknown item: {itemStr}");
                     _responseBuilder.AddToResponse(MsgMnemonic.VocabDontUnderstand);
                 }
             }

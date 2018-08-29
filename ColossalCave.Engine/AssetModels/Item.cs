@@ -17,12 +17,19 @@ namespace ColossalCave.Engine.AssetModels
         /// The item enum
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public ItemsMoveable ItemEnum { get; set; }
+        public Items ItemEnum { get; set; }
 
         /// <summary>
         /// Location of the item at game start
         /// </summary>
         public int InitialLocationId { get; set; }
+
+        /// <summary>
+        /// An alternate location for the item.
+        /// Useful for door items that exist in two locations.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int LocationId2 { get; set; }
 
         /// <summary>
         /// Starting states properties of the item.
