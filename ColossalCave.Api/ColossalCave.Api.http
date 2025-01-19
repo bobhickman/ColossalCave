@@ -1,0 +1,6 @@
+@ColossalCave.Api_HostAddress = http://localhost:5168
+
+GET {{ColossalCave.Api_HostAddress}}/api/heartbeat/
+Accept: application/json
+
+###
